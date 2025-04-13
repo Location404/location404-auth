@@ -1,7 +1,0 @@
-﻿services:
-  useridentity.api:
-    image: useridentity.api
-    build:
-      context: .
-      dockerfile: src/UserIdentity.API/Dockerfile
-

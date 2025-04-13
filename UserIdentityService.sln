@@ -5,11 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserIdentity.API", "src\UserIdentity.API\UserIdentity.API.csproj", "{6610B4AA-32D6-4A1A-8A17-0BFA62F19552}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{04A691B9-BC6D-42AA-8B4B-4BBE359F1677}"
-	ProjectSection(SolutionItems) = preProject
-		compose.yaml = compose.yaml
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserIdentity.Domain", "src\UserIdentity.Domain\UserIdentity.Domain.csproj", "{C3066AC3-993F-4553-AE6E-D774268D1190}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserIdentity.Infra", "src\UserIdentity.Infra\UserIdentity.Infra.csproj", "{D44F72B4-C156-4619-B685-58CC0CFFA3EF}"
