@@ -3,7 +3,7 @@ name: Build and Push Docker image
 on:
   push:
     branches:
-      - main  # ou a branch que preferir
+      - main
 
 jobs:
   docker:
@@ -11,8 +11,8 @@ jobs:
 
     permissions:
       contents: read
-      packages: write  # necessário para publicar no GHCR
-      id-token: write  # necessário para autenticação com OIDC (se quiser usar)
+      packages: write
+      id-token: write
 
     steps:
       - name: Checkout repo
