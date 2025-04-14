@@ -10,6 +10,7 @@ public sealed class User : BaseEntity
     public string EmailAddress { get; private set; }
     public string PasswordHash { get; private set; }
     public DateTime? LastLogin { get; private set; }
+    public bool IsActive { get; private set; } = true;
 
     public User(string userName, string emailAddress, string passwordHash)
     {
