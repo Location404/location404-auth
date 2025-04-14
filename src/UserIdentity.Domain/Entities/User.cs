@@ -9,7 +9,7 @@ public sealed class User : BaseEntity
     public string UserName { get; private set; }
     public string EmailAddress { get; private set; }
     public string PasswordHash { get; private set; }
-    public DateTime LastLogin { get; private set; }
+    public DateTime? LastLogin { get; private set; }
 
     public User(string userName, string emailAddress, string passwordHash)
     {
@@ -19,7 +19,7 @@ public sealed class User : BaseEntity
         ArgumentValidationExtensions.ThrowIfContainsInvalidCharacters(userName, nameof(UserName), ' ', '.', '-', '_');
 
         EmailAddress = new EmailAddress(emailAddress).Value;
-        UserName = userName;
+        UserName = userName.Trim();
         PasswordHash = passwordHash;
     }
 
@@ -43,6 +43,6 @@ public sealed class User : BaseEntity
         ArgumentOutOfRangeException.ThrowIfGreaterThan(userName.Length, 12, nameof(UserName));
         ArgumentValidationExtensions.ThrowIfContainsInvalidCharacters(userName, nameof(UserName), ' ', '.', '-', '_');
 
-        UserName = userName;
+        UserName = userName.Trim();
     }
 }
