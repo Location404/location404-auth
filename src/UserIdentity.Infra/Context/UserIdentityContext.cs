@@ -3,44 +3,31 @@ using UserIdentity.Domain.Entities;
 
 namespace UserIdentity.Infra.Context;
 
-public class UserIdentityContext(DbContextOptions<UserIdentityContext> options) : DbContext(options)
+public class UserIdentityContext(DbContextOptions<DbContext> options) : DbContext(options)
 {
     public DbSet<User> Users { get; set; }
+    // public DbSet<Role> Roles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().HasKey(u => u.Id);
-        modelBuilder.Entity<User>().Property(u => u.UserName).IsRequired().HasMaxLength(12);
-        modelBuilder.Entity<User>().Property(u => u.EmailAddress).IsRequired().HasMaxLength(64);
-        modelBuilder.Entity<User>().Property(u => u.PasswordHash).IsRequired().HasMaxLength(256);
-        modelBuilder.Entity<User>().Property(u => u.LastLogin).IsRequired(false);
+        # region [Entity Configurations]
 
-        modelBuilder.Entity<User>().Property(u => u.IsActive).IsRequired();
-        modelBuilder.Entity<User>().Property(u => u.CreatedAt).IsRequired();
-        modelBuilder.Entity<User>().Property(u => u.UpdatedAt).IsRequired();
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Username).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.EmailAddress).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.PasswordHash).IsRequired();
+            entity.Property(e => e.PasswordSalt).IsRequired();
+            entity.Property(e => e.DisplayName).IsRequired().HasMaxLength(50);
+            entity.HasIndex(e => e.Username).IsUnique();
+            entity.HasIndex(e => e.EmailAddress).IsUnique();
+            entity.HasIndex(e => e.DisplayName).IsUnique();
+        });
 
-        // modelBuilder.Entity<User>().HasIndex(u => u.UserName).IsUnique();
-        // modelBuilder.Entity<User>().HasIndex(u => u.EmailAddress).IsUnique();
+        # endregion
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserIdentityContext).Assembly);
         base.OnModelCreating(modelBuilder);
-    }
-
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        foreach (var entry in ChangeTracker.Entries())
-        {
-            if (entry.State == EntityState.Added)
-            {
-                entry.CurrentValues["CreatedAt"] = DateTime.UtcNow;
-                entry.CurrentValues["UpdatedAt"] = DateTime.UtcNow;
-            }
-            else if (entry.State == EntityState.Modified)
-            {
-                entry.CurrentValues["UpdatedAt"] = DateTime.UtcNow;
-            }
-        }
-
-        return base.SaveChangesAsync(cancellationToken);
     }
 }
