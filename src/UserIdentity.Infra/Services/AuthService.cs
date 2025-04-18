@@ -5,24 +5,20 @@ using System.Text;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 using UserIdentity.Domain.Entities;
 using UserIdentity.Domain.Interfaces;
+using UserIdentity.Infra.Configurations;
 using UserIdentity.Infra.Context;
 
 namespace UserIdentity.Infra.Services;
 
-public class AuthService : IAuthService
+public class AuthService(UserIdentityContext dbContext, IOptions<JwtConfiguration> jwtConfig) : IAuthService
 {
-    private readonly UserIdentityContext _dbContext;
-    private readonly IConfiguration _configuration;
-
-    public AuthService(UserIdentityContext dbContext, IConfiguration configuration)
-    {
-        _dbContext = dbContext;
-        _configuration = configuration;
-    }
+    private readonly UserIdentityContext _dbContext = dbContext;
+    private readonly JwtConfiguration _jwtConfig = jwtConfig.Value;
 
     public async Task<AuthResult> RegisterAsync(string username, string email, string displayName, string password)
     {
@@ -49,7 +45,7 @@ public class AuthService : IAuthService
             Success: true,
             Token: token,
             RefreshToken: refreshToken,
-            Expiration: DateTime.UtcNow.AddHours(1),
+            Expiration: DateTime.UtcNow.AddMinutes(_jwtConfig.ExpirationInMinutes),
             User: user
         );
     }
@@ -57,6 +53,7 @@ public class AuthService : IAuthService
     public async Task<AuthResult> LoginAsync(string usernameOrEmail, string password)
     {
         var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Username == usernameOrEmail || u.EmailAddress == usernameOrEmail);
+        ArgumentNullException.ThrowIfNull(user, nameof(user));
 
         if (user is null)
         {
@@ -113,14 +110,14 @@ public class AuthService : IAuthService
             new("DisplayName", user.DisplayName)
         ];
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.SecretKey!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: _configuration["Jwt:Issuer"],
-            audience: _configuration["Jwt:Audience"],
+            issuer: _jwtConfig.Issuer,
+            audience: _jwtConfig.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(1),
+            expires: DateTime.UtcNow.AddMinutes(_jwtConfig.ExpirationInMinutes),
             signingCredentials: creds
         );
 
