@@ -19,9 +19,8 @@ public class User(string username, string emailAddress, string displayName, stri
     public string PreferredLanguage { get; private set; } = "pt-BR";
     public int FailedLoginAttempts { get; private set; } = 0;
     public DateTime? LockoutEndDate { get; private set; }
-    public string RefreshToken { get; private set; }
+    public string? RefreshToken { get; private set; }
     public DateTime? RefreshTokenExpiryTime { get; private set; }
-    // public ICollection<Role> UserRoles { get; private set; } = [];
 
     #endregion
 
@@ -73,28 +72,6 @@ public class User(string username, string emailAddress, string displayName, stri
         FailedLoginAttempts = 0;
         LockoutEndDate = null;
     }
-
-    // public void RemoveRole(params List<Role> roles)
-    // {
-    //     roles.ForEach(role =>
-    //     {
-    //         if (!UserRoles.Any(ur => ur.Id == role.Id))
-    //         {
-    //             UserRoles.Remove(role);
-    //         }
-    //     });
-    // }
-
-    // public void AddRole(params List<Role> roles)
-    // {
-    //     roles.ForEach(role =>
-    //     {
-    //         if (!UserRoles.Any(ur => ur.Id == role.Id))
-    //         {
-    //             UserRoles.Add(role);
-    //         }
-    //     });
-    // }
 
     #endregion
 }
