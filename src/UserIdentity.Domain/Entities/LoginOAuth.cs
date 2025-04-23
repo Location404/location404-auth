@@ -15,6 +15,6 @@ public class LoginOAuth(string provider, string providerId, string refreshToken,
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime LastLoginAt { get; private set; } = DateTime.UtcNow;
 
-    public bool IsExpired() => DateTime.UtcNow > ExpirationDate;
+    public bool IsExpired => DateTime.UtcNow > ExpirationDate;
     public void UpdateLastLogin() => LastLoginAt = DateTime.UtcNow;
 }
