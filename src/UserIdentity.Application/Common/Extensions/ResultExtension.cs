@@ -1,4 +1,6 @@
-namespace UserIdentity.Domain.Common.Results;
+using UserIdentity.Domain.Common.Results;
+
+namespace UserIdentity.Application.Common.Extensions;
 
 public static class ResultExtensions
 {

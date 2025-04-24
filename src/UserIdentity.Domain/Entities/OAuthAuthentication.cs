@@ -17,4 +17,9 @@ public class OAuthAuthentication(string provider, string providerId, string refr
 
     public bool IsExpired => DateTime.UtcNow > ExpirationDate;
     public void UpdateLastLogin() => LastLoginAt = DateTime.UtcNow;
+
+    public void SetUserApplication(UserApplication userApplication)
+    {
+        UserApplication = userApplication;
+    }
 }
