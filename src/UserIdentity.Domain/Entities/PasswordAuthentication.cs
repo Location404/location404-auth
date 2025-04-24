@@ -17,4 +17,21 @@ public class PasswordAuthentication(string passwordHash, string passwordSalt, st
 
     public bool IsExpired() => DateTime.UtcNow > RefreshTokenExpirationDate;
     public void UpdateLastLogin() => LastLoginAt = DateTime.UtcNow;
+
+    public void SetUserApplication(UserApplication userApplication)
+    {
+        UserApplication = userApplication;
+    }
+
+    public void RenewRefreshToken(string newToken, DateTime expirationDate)
+    {
+        RefreshToken = newToken;
+        RefreshTokenExpirationDate = expirationDate;
+    }
+
+    public void UpdatePassword(string newPasswordHash, string newPasswordSalt)
+    {
+        PasswordHash = newPasswordHash;
+        PasswordSalt = newPasswordSalt;
+    }
 }
