@@ -2,7 +2,7 @@ using UserIdentity.Domain.Common;
 
 namespace UserIdentity.Domain.Entities;
 
-public class LoginPassword(string passwordHash, string passwordSalt, string refreshToken, DateTime refreshTokenExpirationDate) : BaseEntity
+public class PasswordAuthentication(string passwordHash, string passwordSalt, string refreshToken, DateTime refreshTokenExpirationDate) : BaseEntity
 {
     public virtual UserApplication UserApplication { get; private set; } = null!;
 
