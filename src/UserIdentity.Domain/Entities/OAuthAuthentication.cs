@@ -2,7 +2,7 @@ using UserIdentity.Domain.Common;
 
 namespace UserIdentity.Domain.Entities;
 
-public class LoginOAuth(string provider, string providerId, string refreshToken, DateTime expirationDate) : BaseEntity
+public class OAuthAuthentication(string provider, string providerId, string refreshToken, DateTime expirationDate) : BaseEntity
 {
     public virtual UserApplication UserApplication { get; private set; } = null!;
 

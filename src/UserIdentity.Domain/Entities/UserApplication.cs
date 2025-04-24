@@ -3,7 +3,7 @@ using UserIdentity.Domain.ValueObject;
 
 namespace UserIdentity.Domain.Entities;
 
-public class UserApplication(string username, string emailAddress) : BaseEntity
+public class UserApplication(string username, string emailAddress, PasswordAuthentication? passwordAuthentication = null, OAuthAuthentication? oAuthAuthentication = null) : BaseEntity
 {
     public string DisplayName { get; private set; } = username;
     public string Username { get; private set; } = username;
@@ -12,6 +12,6 @@ public class UserApplication(string username, string emailAddress) : BaseEntity
 
     public string PreferredLanguage { get; private set; } = "pt-BR";
 
-    public virtual LoginPassword? LoginPassword { get; private set; }
-    public virtual LoginOAuth? LoginOAuth { get; private set; }
+    public virtual PasswordAuthentication? LoginPassword { get; private set; } = passwordAuthentication;
+    public virtual OAuthAuthentication? LoginOAuth { get; private set; } = oAuthAuthentication;
 }
