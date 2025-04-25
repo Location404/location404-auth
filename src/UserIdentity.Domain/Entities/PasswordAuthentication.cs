@@ -5,6 +5,7 @@ namespace UserIdentity.Domain.Entities;
 public class PasswordAuthentication(string passwordHash, string passwordSalt, string refreshToken, DateTime refreshTokenExpirationDate) : BaseEntity
 {
     public virtual UserApplication UserApplication { get; private set; } = null!;
+    public Guid UserApplicationId { get; private set; }
 
     public string PasswordHash { get; private set; } = passwordHash;
     public string PasswordSalt { get; private set; } = passwordSalt;
