@@ -29,7 +29,7 @@ public class OAuthAuthenticationMap : IEntityTypeConfiguration<OAuthAuthenticati
         builder.Property(x => x.RefreshToken)
             .HasColumnName("RefreshToken")
             .IsRequired(false)
-            .HasMaxLength(512);
+            .HasMaxLength(256);
 
         builder.Property(x => x.ExpirationDate)
             .HasColumnName("ExpirationDate")
