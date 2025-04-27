@@ -1,5 +1,7 @@
 using MediatR;
+
 using Microsoft.Extensions.Logging;
+
 using UserIdentity.Application.Common.Interfaces;
 using UserIdentity.Application.Common.Results;
 using UserIdentity.Application.Features.Authentication.Interfaces;
@@ -23,10 +25,10 @@ public class RegisterUserCommandHandler(
     {
         return await _unitOfWork.UserRepository.ExistsByUsernameOrEmailAsync(request.Username, request.EmailAddress)
             ? Result<UserRegistrationResult>.Failure(Error.Conflict("User with the same username or email already exists."))
-            : await RegisterUserAsync(request);
+            : await RegisterUserAsync(request, cancellationToken);
     }
 
-    private async Task<Result<UserRegistrationResult>> RegisterUserAsync(RegisterUserCommand request)
+    private async Task<Result<UserRegistrationResult>> RegisterUserAsync(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         using var transaction = await _unitOfWork.BeginTransactionAsync();
         _logger.LogInformation("Registering user with username: {Username}", request.Username);
@@ -37,7 +39,7 @@ public class RegisterUserCommandHandler(
             var user = new UserApplication(request.Username, request.EmailAddress, hash, salt);
 
             await _unitOfWork.UserRepository.AddAsync(user);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             (string token, string refreshToken) = _tokenService.GenerateTokens(user);
             transaction.Commit();
