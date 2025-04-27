@@ -9,7 +9,7 @@ namespace UserIdentity.Application.Common.Interfaces;
 /// </summary>
 public interface IUnitOfWork : IDisposable, IAsyncDisposable
 {
-    IUserRepository UserRepository { get; }
+    public IUserRepository UserRepository { get; }
 
     /// <summary>
     /// Salva todas as mudanças feitas no contexto de forma atômica.
