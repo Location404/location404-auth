@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 using UserIdentity.Domain.Entities;
 
 namespace UserIdentity.Infra.Context.EntityMapping;
@@ -51,6 +52,30 @@ public class UserApplicationMap : IEntityTypeConfiguration<UserApplication>
 
         builder.Property(x => x.UpdatedAt)
             .HasColumnName("UpdatedAt")
+            .IsRequired(false);
+
+        builder.Property(x => x.GoogleId)
+            .HasColumnName("GoogleId")
+            .IsRequired(false)
+            .HasMaxLength(128);
+
+        builder.Property(x => x.PasswordHash)
+            .HasColumnName("PasswordHash")
+            .IsRequired()
+            .HasMaxLength(128);
+
+        builder.Property(x => x.PasswordSalt)
+            .HasColumnName("PasswordSalt")
+            .IsRequired()
+            .HasMaxLength(128);
+
+        builder.Property(x => x.RefreshToken)
+            .HasColumnName("RefreshToken")
+            .IsRequired(false)
+            .HasMaxLength(128);
+
+        builder.Property(x => x.RefreshTokenExpiryTime)
+            .HasColumnName("RefreshTokenExpiryTime")
             .IsRequired(false);
     }
 }
