@@ -1,4 +1,4 @@
-using UserIdentity.Domain.Common.Results;
+using UserIdentity.Application.Common.Results;
 
 namespace UserIdentity.Application.Common.Extensions;
 
