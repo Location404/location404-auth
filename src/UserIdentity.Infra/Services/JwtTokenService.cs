@@ -16,6 +16,7 @@ public class JwtTokenService(IOptions<JwtSettings> jwtSettings) : ITokenService
 {
     private readonly JwtSettings _jwtSettings = jwtSettings.Value;
 
+    /// <inheritdoc/>
     public string GenerateAccessToken(UserApplication user)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
@@ -39,6 +40,7 @@ public class JwtTokenService(IOptions<JwtSettings> jwtSettings) : ITokenService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
+    /// <inheritdoc/>
     public string GenerateRefreshToken()
     {
         var randomNumber = new byte[64];
@@ -47,6 +49,7 @@ public class JwtTokenService(IOptions<JwtSettings> jwtSettings) : ITokenService
         return Convert.ToBase64String(randomNumber);
     }
 
+    /// <inheritdoc/>
     public (string token, string refreshToken) GenerateTokens(UserApplication user)
     {
         var accessToken = GenerateAccessToken(user);
@@ -55,6 +58,7 @@ public class JwtTokenService(IOptions<JwtSettings> jwtSettings) : ITokenService
         return (accessToken, refreshToken);
     }
 
+    /// <inheritdoc/>
     public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
     {
         var tokenValidationParameters = new TokenValidationParameters
