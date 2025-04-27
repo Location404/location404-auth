@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-
 using UserIdentity.Domain.Entities;
 
 namespace UserIdentity.Infra.Context;
