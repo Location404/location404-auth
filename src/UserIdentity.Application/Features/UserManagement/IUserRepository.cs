@@ -5,8 +5,9 @@ namespace UserIdentity.Application.Features.UserManagement;
 
 public interface IUserRepository
 {
-    Task<UserDto> GetByIdAsync(Guid id);
-    Task<UserDto> GetByUsernameAsync(string username);
+    Task<UserApplicationDto?> GetByIdAsync(Guid id);
+    Task<UserApplicationDto?> GetByUsernameAsync(string username);
+    Task<UserApplicationDto?> GetByEmailAsync(string email);
     Task<bool> ExistsByUsernameOrEmailAsync(string username, string email);
 
     Task AddAsync(UserApplication user);
