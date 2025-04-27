@@ -3,51 +3,38 @@ using UserIdentity.Domain.ValueObject;
 
 namespace UserIdentity.Domain.Entities;
 
-public class UserApplication : BaseEntity
+public class UserApplication(string username, string emailAddress, string passwordHash, string passwordSalt) : BaseEntity
 {
-    public string DisplayName { get; private set; }
-    public string Username { get; private set; }
-    public string EmailAddress { get; private set; }
+    public string DisplayName { get; private set; } = username;
+    public string Username { get; private set; } = username;
+    public string EmailAddress { get; private set; } = new EmailAddress(emailAddress).Value;
     public string? ProfilePictureUrl { get; private set; }
 
     public string PreferredLanguage { get; private set; } = "pt-BR";
 
-    public DateTime CreatedAt { get; private set; }
+    public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; private set; }
 
-    public virtual PasswordAuthentication? LoginPassword { get; private set; }
-    public virtual OAuthAuthentication? LoginOAuth { get; private set; }
+    public string? GoogleId { get; private set; }
 
-    public UserApplication(string username, string emailAddress, PasswordAuthentication? passwordAuthentication = null, OAuthAuthentication? oAuthAuthentication = null)
-    {
-        Username = username;
-        DisplayName = username;
-        EmailAddress = new EmailAddress(emailAddress).Value;
-        PreferredLanguage = "pt-BR";
-        CreatedAt = DateTime.UtcNow;
+    public string PasswordHash { get; private set; } = passwordHash;
+    public string PasswordSalt { get; private set; } = passwordSalt;
 
-        if (passwordAuthentication != null)
-        {
-            LoginPassword = passwordAuthentication;
-            passwordAuthentication.SetUserApplication(this);
-        }
+    // public bool IsEmailVerified { get; private set; } = false;
 
-        if (oAuthAuthentication != null)
-        {
-            LoginOAuth = oAuthAuthentication;
-            oAuthAuthentication.SetUserApplication(this);
-        }
-
-        if (this is { LoginPassword: null, LoginOAuth: null })
-        {
-            throw new ArgumentException("At least one authentication method must be provided.");
-        }
-    }
+    public string? RefreshToken { get; private set; }
+    public DateTime? RefreshTokenExpiryTime { get; private set; }
 
     public void UpdateProfile(string displayName, string? profilePictureUrl = null)
     {
         DisplayName = displayName;
         if (profilePictureUrl != null) ProfilePictureUrl = profilePictureUrl;
         UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void UpdateRefreshToken(string refreshToken, DateTime expiryTime)
+    {
+        RefreshToken = refreshToken;
+        RefreshTokenExpiryTime = expiryTime;
     }
 }
