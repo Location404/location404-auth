@@ -1,7 +1,7 @@
 using MediatR;
 using UserIdentity.Application.Common.Results;
 
-namespace UserIdentity.Application.Features.UserManagement.Commands;
+namespace UserIdentity.Application.Features.UserManagement.Commands.RegisterUser;
 
 public record RegisterUserCommand(
     string Username,

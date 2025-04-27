@@ -1,4 +1,4 @@
-namespace UserIdentity.Application.Features.UserManagement.Commands;
+namespace UserIdentity.Application.Features.UserManagement.Commands.RegisterUser;
 
 public record UserRegistrationResult(
     Guid UserId,

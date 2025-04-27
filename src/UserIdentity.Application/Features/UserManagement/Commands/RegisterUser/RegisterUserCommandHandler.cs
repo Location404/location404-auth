@@ -1,4 +1,3 @@
-
 using MediatR;
 using Microsoft.Extensions.Logging;
 using UserIdentity.Application.Common.Interfaces;
@@ -7,7 +6,7 @@ using UserIdentity.Application.Features.Authentication.Interfaces;
 using UserIdentity.Domain.Common.Results;
 using UserIdentity.Domain.Entities;
 
-namespace UserIdentity.Application.Features.UserManagement.Commands;
+namespace UserIdentity.Application.Features.UserManagement.Commands.RegisterUser;
 
 public class RegisterUserCommandHandler(
     IUnitOfWork unitOfWork,
