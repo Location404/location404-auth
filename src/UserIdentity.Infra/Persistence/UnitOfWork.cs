@@ -29,11 +29,6 @@ public class UnitOfWork(UserIdentityContext dbContext, IUserRepository userRepos
     {
         try
         {
-            // Opcionalmente, aqui podem ser adicionados comportamentos como:
-            // - Timestamp automático em entidades auditáveis
-            // - Soft delete
-            // - Registro de histórico de alterações
-
             return await _dbContext.SaveChangesAsync(cancellationToken);
         }
         catch (DbUpdateConcurrencyException ex)
@@ -44,6 +39,11 @@ public class UnitOfWork(UserIdentityContext dbContext, IUserRepository userRepos
         catch (DbUpdateException ex)
         {
             _logger.LogError(ex, "Erro ao salvar alterações no banco de dados");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erro inesperado ao salvar alterações");
             throw;
         }
     }
