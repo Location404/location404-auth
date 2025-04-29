@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using UserIdentity.Application.Common.Interfaces;
 using UserIdentity.Application.Features.Authentication.Interfaces;
 using UserIdentity.Application.Features.UserManagement;
+using UserIdentity.Application.Features.UserManagement.Commands.RegisterUser;
 using UserIdentity.Infra.Context;
 using UserIdentity.Infra.Persistence;
 using UserIdentity.Infra.Services;
@@ -23,12 +24,19 @@ public static class DependencyInjection
 
         services.AddDbContext<UserIdentityContext>(op =>
         {
-            op.UseNpgsql(configuration.GetConnectionString("UserIdentityDb"));
+            // op.UseNpgsql(configuration.GetConnectionString("UserIdentityDb"));
+            op.UseInMemoryDatabase("UserIdentityDb");
 
 #if DEBUG
             op.EnableSensitiveDataLogging();
             op.EnableDetailedErrors();
 #endif
+        });
+
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblyContaining<RegisterUserCommand>();
+            cfg.RegisterServicesFromAssemblyContaining<UserRegistrationResult>();
         });
 
         return services;
