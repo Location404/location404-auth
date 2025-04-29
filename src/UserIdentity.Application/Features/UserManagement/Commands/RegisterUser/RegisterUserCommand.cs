@@ -5,6 +5,7 @@ namespace UserIdentity.Application.Features.UserManagement.Commands.RegisterUser
 
 public record RegisterUserCommand(
     string Username,
-    string EmailAddress,
-    string Password) : IRequest<Result<UserRegistrationResult>>;
+    string Password,
+    string EmailAddress
+    ) : IRequest<Result<UserRegistrationResult>>;
 
