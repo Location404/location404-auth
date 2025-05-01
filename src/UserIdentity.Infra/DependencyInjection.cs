@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using UserIdentity.Application.Common.Interfaces;
 using UserIdentity.Application.Features.Authentication.Interfaces;
@@ -21,11 +22,12 @@ public static class DependencyInjection
     {
         services.AddDbContext<UserIdentityContext>(op =>
         {
-            op.UseNpgsql(configuration.GetConnectionString("UserIdentityDb"));
-
 #if DEBUG
+            op.UseNpgsql(configuration.GetConnectionString("UserIdentityDb")).LogTo(Console.WriteLine, LogLevel.Information);
             op.EnableSensitiveDataLogging();
             op.EnableDetailedErrors();
+#else
+            op.UseNpgsql(configuration.GetConnectionString("UserIdentityDb"));
 #endif
         });
 
