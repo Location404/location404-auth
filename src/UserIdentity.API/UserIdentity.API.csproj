@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="../UserIdentity.Application/UserIdentity.Application.csproj" />
       <ProjectReference Include="../UserIdentity.Infra/UserIdentity.Infra.csproj" />
     </ItemGroup>
 
