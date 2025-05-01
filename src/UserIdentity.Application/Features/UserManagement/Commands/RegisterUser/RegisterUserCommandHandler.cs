@@ -28,7 +28,7 @@ public class RegisterUserCommandHandler(
 
     private async Task<Result<UserRegistrationResult>> RegisterUserAsync(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        using var transaction = await _unitOfWork.BeginTransactionAsync();
+        using var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
         _logger.LogInformation("Registering user with username: {Username}", request.Username);
 
         try
