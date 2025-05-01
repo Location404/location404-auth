@@ -9,73 +9,86 @@ public class UserApplicationMap : IEntityTypeConfiguration<UserApplication>
 {
     public void Configure(EntityTypeBuilder<UserApplication> builder)
     {
-        builder.ToTable("UserApplication");
+        builder.ToTable("user_application");
 
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id)
-            .HasColumnName("Id")
+            .HasColumnName("id")
             .ValueGeneratedOnAdd();
 
         builder.Property(x => x.Id)
-            .HasColumnName("Id")
+            .HasColumnName("id")
             .IsRequired();
 
         builder.Property(x => x.DisplayName)
-            .HasColumnName("DisplayName")
+            .HasColumnName("display_name")
             .IsRequired()
             .HasMaxLength(32);
 
         builder.Property(x => x.Username)
-            .HasColumnName("Username")
+            .HasColumnName("username")
             .IsRequired()
             .HasMaxLength(16);
 
         builder.Property(x => x.EmailAddress)
-            .HasColumnName("EmailAddress")
+            .HasColumnName("email_address")
             .IsRequired()
             .HasMaxLength(128);
 
         builder.Property(x => x.ProfilePictureUrl)
-            .HasColumnName("ProfilePictureUrl")
+            .HasColumnName("profile_pictureUrl")
             .IsRequired(false)
             .HasMaxLength(256);
 
         builder.Property(x => x.PreferredLanguage)
-            .HasColumnName("PreferredLanguage")
+            .HasColumnName("preferred_language")
             .IsRequired()
             .HasMaxLength(5);
 
         builder.Property(x => x.CreatedAt)
-            .HasColumnName("CreatedAt")
+            .HasColumnName("created_at")
             .IsRequired();
 
         builder.Property(x => x.UpdatedAt)
-            .HasColumnName("UpdatedAt")
+            .HasColumnName("updated_at")
             .IsRequired(false);
 
         builder.Property(x => x.GoogleId)
-            .HasColumnName("GoogleId")
+            .HasColumnName("google_id")
             .IsRequired(false)
             .HasMaxLength(128);
 
         builder.Property(x => x.PasswordHash)
-            .HasColumnName("PasswordHash")
+            .HasColumnName("password_hash")
             .IsRequired()
             .HasMaxLength(128);
 
         builder.Property(x => x.PasswordSalt)
-            .HasColumnName("PasswordSalt")
+            .HasColumnName("password_salt")
             .IsRequired()
             .HasMaxLength(128);
 
         builder.Property(x => x.RefreshToken)
-            .HasColumnName("RefreshToken")
+            .HasColumnName("refresh_token")
             .IsRequired(false)
             .HasMaxLength(128);
 
         builder.Property(x => x.RefreshTokenExpiryTime)
-            .HasColumnName("RefreshTokenExpiryTime")
+            .HasColumnName("refresh_token_expiry_time")
             .IsRequired(false);
+
+        // indexes
+        builder.HasIndex(x => x.Username)
+            .HasDatabaseName("idx_user_application_username")
+            .IsUnique();
+
+        builder.HasIndex(x => x.EmailAddress)
+            .HasDatabaseName("idx_user_application_email_address")
+            .IsUnique();
+
+        builder.HasIndex(x => x.GoogleId)
+            .HasDatabaseName("idx_user_application_google_id")
+            .IsUnique();
     }
 }
