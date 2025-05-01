@@ -62,17 +62,17 @@ public class UserApplicationMap : IEntityTypeConfiguration<UserApplication>
         builder.Property(x => x.PasswordHash)
             .HasColumnName("password_hash")
             .IsRequired()
-            .HasMaxLength(128);
+            .HasMaxLength(256);
 
         builder.Property(x => x.PasswordSalt)
             .HasColumnName("password_salt")
             .IsRequired()
-            .HasMaxLength(128);
+            .HasMaxLength(256);
 
         builder.Property(x => x.RefreshToken)
             .HasColumnName("refresh_token")
             .IsRequired(false)
-            .HasMaxLength(128);
+            .HasMaxLength(256);
 
         builder.Property(x => x.RefreshTokenExpiryTime)
             .HasColumnName("refresh_token_expiry_time")
