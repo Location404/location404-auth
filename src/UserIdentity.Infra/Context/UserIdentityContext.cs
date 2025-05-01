@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using UserIdentity.Domain.Entities;
-
 namespace UserIdentity.Infra.Context;
 
-public class UserIdentityContext(DbContextOptions<DbContext> options) : DbContext(options)
+public class UserIdentityContext(DbContextOptions<UserIdentityContext> options) : DbContext(options)
 {
     public DbSet<UserApplication> UserApplication { get; set; }
 
