@@ -12,6 +12,9 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.MapOpenApi();
 
+app.UseAuthorization();
+app.UseAuthentication();
+
 app.MapUserEndpoints();
 app.MapGet("/", () => "Hello World!");
 
