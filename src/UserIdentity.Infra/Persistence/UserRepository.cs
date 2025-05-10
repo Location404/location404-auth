@@ -1,5 +1,5 @@
-
 using Microsoft.EntityFrameworkCore;
+
 using UserIdentity.Application.Common.Extensions;
 using UserIdentity.Application.Features.UserManagement;
 using UserIdentity.Application.Features.UserManagement.DTOs;
@@ -14,7 +14,7 @@ public class UserRepository(UserIdentityContext context) : IUserRepository
 
     public async Task AddAsync(UserApplication user)
     {
-       await _userDbSet.AddAsync(user);
+        await _userDbSet.AddAsync(user);
     }
 
     public async Task<bool> ExistsByUsernameOrEmailAsync(string username, string email)
@@ -27,6 +27,7 @@ public class UserRepository(UserIdentityContext context) : IUserRepository
         var user = await _userDbSet.SingleOrDefaultAsync(u => u.EmailAddress == email);
         return user?.ToDto();
     }
+
 
     public async Task<UserApplicationDto?> GetByIdAsync(Guid id)
     {

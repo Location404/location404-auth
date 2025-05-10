@@ -33,4 +33,8 @@ public interface ITokenService
     /// <param name="user">O usuário para o qual os tokens serão gerados.</param>
     /// <returns>Uma tupla contendo o token de acesso e o token de atualização.</returns>
     (string token, string refreshToken) GenerateTokens(UserApplication user);
+
+    public DateTime GetRefreshTokenExpirationTime();
+    public DateTime GetAccessTokenExpirationTime();
+    public DateTime GetAccessTokenExpirationTime(DateTime now);
 }
