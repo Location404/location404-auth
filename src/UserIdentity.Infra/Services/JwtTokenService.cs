@@ -58,6 +58,16 @@ public class JwtTokenService(IOptions<JwtSettings> jwtSettings) : ITokenService
         return (accessToken, refreshToken);
     }
 
+    public DateTime GetAccessTokenExpirationTime()
+    {
+        throw new NotImplementedException();
+    }
+
+    public DateTime GetAccessTokenExpirationTime(DateTime now)
+    {
+        throw new NotImplementedException();
+    }
+
     /// <inheritdoc/>
     public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
     {
@@ -78,5 +88,10 @@ public class JwtTokenService(IOptions<JwtSettings> jwtSettings) : ITokenService
         return securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase)
             ? throw new SecurityTokenException("Invalid token")
             : principal;
+    }
+
+    public DateTime GetRefreshTokenExpirationTime()
+    {
+        throw new NotImplementedException();
     }
 }

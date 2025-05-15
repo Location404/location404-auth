@@ -8,8 +8,6 @@ using UserIdentity.Infra.Context;
 
 namespace UserIdentity.Infra.Persistence;
 
-
-
 /// <summary>
 /// Implementação concreta do padrão Unit of Work para gerenciar transações e persistência de dados.
 /// </summary>
@@ -18,7 +16,7 @@ namespace UserIdentity.Infra.Persistence;
 /// </remarks>
 /// <param name="dbContext">Contexto de banco de dados da aplicação</param>
 /// <param name="logger">Logger para operações de transação</param>
-public class UnitOfWork(UserIdentityContext dbContext, IUserRepository userRepository, ILogger<UnitOfWork> logger) : IUnitOfWork
+public sealed class UnitOfWork(UserIdentityContext dbContext, IUserRepository userRepository, ILogger<UnitOfWork> logger) : IUnitOfWork
 {
     private readonly UserIdentityContext _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     private readonly ILogger<UnitOfWork> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -112,7 +110,7 @@ public class UnitOfWork(UserIdentityContext dbContext, IUserRepository userRepos
     private bool _disposed;
 
 
-    protected virtual void Dispose(bool disposing)
+    private void Dispose(bool disposing)
     {
         if (!_disposed && disposing)
         {

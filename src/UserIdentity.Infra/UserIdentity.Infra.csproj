@@ -13,6 +13,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.4"/>
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.4"/>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.4"/>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.4"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../UserIdentity.Application/UserIdentity.Application.csproj"/>
