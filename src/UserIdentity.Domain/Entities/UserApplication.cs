@@ -15,15 +15,15 @@ public class UserApplication(string username, string emailAddress, string passwo
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; private set; }
 
-    public string? GoogleId { get; private set; }
-
     public string PasswordHash { get; private set; } = passwordHash;
     public string PasswordSalt { get; private set; } = passwordSalt;
-
-    // public bool IsEmailVerified { get; private set; } = false;
-
+    
     public string? RefreshToken { get; private set; }
     public DateTime? RefreshTokenExpiryTime { get; private set; }
+
+    public bool ExternalLogin { get; private set; } = false;
+    public string? ExternalProviderId { get; private set; }
+    public string? ExternalProvider { get; private set; }
 
     public void UpdateProfile(string displayName, string? profilePictureUrl = null)
     {
@@ -36,5 +36,12 @@ public class UserApplication(string username, string emailAddress, string passwo
     {
         RefreshToken = refreshToken;
         RefreshTokenExpiryTime = expiryTime;
+    }
+
+    public void SetExternalLogin(string provider, string externalId)
+    {
+        ExternalLogin = true;
+        ExternalProvider = provider;
+        ExternalProviderId = externalId;
     }
 }
