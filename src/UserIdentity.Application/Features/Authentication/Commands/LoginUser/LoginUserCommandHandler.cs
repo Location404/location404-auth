@@ -7,22 +7,15 @@ using UserIdentity.Domain.Common.Results;
 
 namespace UserIdentity.Application.Features.Authentication.Commands.LoginUser;
 
-public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<LoginUserCommandResult>>
+public class LoginUserCommandHandler(
+    ITokenService tokenService,
+    IPasswordService passwordService,
+    IUnitOfWork unitOfWork)
+    : IRequestHandler<LoginUserCommand, Result<LoginUserCommandResult>>
 {
-    private readonly IPasswordService _passwordService;
-    private readonly ITokenService _tokenService;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public LoginUserCommandHandler(ITokenService tokenService, IPasswordService passwordService, IUnitOfWork unitOfWork)
-    {
-        _tokenService = tokenService;
-        _unitOfWork = unitOfWork;
-        _passwordService = passwordService;
-    }
-
     public async Task<Result<LoginUserCommandResult>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
-        var userExist = await _unitOfWork.UserRepository.ExistsByUsernameOrEmailAsync(
+        var userExist = await unitOfWork.UserRepository.ExistsByUsernameOrEmailAsync(
             email: request.Email,
             cancellationToken: cancellationToken);
 
@@ -31,11 +24,11 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<
             return Result<LoginUserCommandResult>.Failure(Error.NotFound("User with this email or username not found"));
         }
 
-        var user = await _unitOfWork.UserRepository.GetByUsernameOrEmailAsync(
+        var user = await unitOfWork.UserRepository.GetByUsernameOrEmailAsync(
             email: request.Email,
             cancellationToken: cancellationToken);
 
-        var isAuthenticated = _passwordService.VerifyPasswordHash(
+        var isAuthenticated = passwordService.VerifyPasswordHash(
             password: request.Password,
             storedHash: user!.PasswordHash,
             storedSalt: user.PasswordSalt);
@@ -45,15 +38,15 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<
             return Result<LoginUserCommandResult>.Failure(Error.Unauthorized("Invalid credentials"));
         }
 
-        var (token, refreshToken) = _tokenService.GenerateTokens(user);
+        var (token, refreshToken) = tokenService.GenerateTokens(user);
 
-        var loginUserResult = new LoginUserCommandResult(
+        var SignInUserResult = new LoginUserCommandResult(
             UserId: user.Id,
             AccessToken: token,
             RefreshToken: refreshToken,
-            AccessTokenExpiration: _tokenService.GetAccessTokenExpirationTime(),
-            RefreshTokenExpiration: _tokenService.GetRefreshTokenExpirationTime());
+            AccessTokenExpiration: tokenService.GetAccessTokenExpirationTime(),
+            RefreshTokenExpiration: tokenService.GetRefreshTokenExpirationTime());
 
-        return Result<LoginUserCommandResult>.Success(loginUserResult);
+        return Result<LoginUserCommandResult>.Success(SignInUserResult);
     }
 }
