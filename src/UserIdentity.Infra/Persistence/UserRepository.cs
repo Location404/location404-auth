@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-using UserIdentity.Application.Common.Extensions;
 using UserIdentity.Application.Features.UserManagement;
-using UserIdentity.Application.Features.UserManagement.DTOs;
 using UserIdentity.Domain.Entities;
 using UserIdentity.Infra.Context;
 
@@ -12,32 +10,33 @@ public class UserRepository(UserIdentityContext context) : IUserRepository
 {
     private readonly DbSet<UserApplication> _userDbSet = context.Set<UserApplication>();
 
-    public async Task AddAsync(UserApplication user)
+    public async Task AddAsync(UserApplication user, CancellationToken cancellationToken = default)
     {
-        await _userDbSet.AddAsync(user);
+        await _userDbSet.AddAsync(user, cancellationToken);
     }
 
-    public async Task<bool> ExistsByUsernameOrEmailAsync(string username, string email)
+    public async Task<bool> ExistsByUsernameOrEmailAsync(string? username = null, string? email = null, CancellationToken cancellationToken = default)
     {
-        return await _userDbSet.AnyAsync(u => u.Username == username || u.EmailAddress == email);
+        return await _userDbSet.AnyAsync(u => u.Username == username || u.EmailAddress == email, cancellationToken);
     }
 
-    public async Task<UserApplicationDto?> GetByEmailAsync(string email)
+    public async Task<UserApplication?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
-        var user = await _userDbSet.SingleOrDefaultAsync(u => u.EmailAddress == email);
-        return user?.ToDto();
+        return await _userDbSet.SingleOrDefaultAsync(u => u.EmailAddress == email, cancellationToken);
     }
 
-
-    public async Task<UserApplicationDto?> GetByIdAsync(Guid id)
+    public Task<UserApplication?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var user = await _userDbSet.SingleOrDefaultAsync(u => u.Id == id);
-        return user?.ToDto();
+        return _userDbSet.SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
 
-    public async Task<UserApplicationDto?> GetByUsernameAsync(string username)
+    public Task<UserApplication?> GetByUsernameAsync(string username, CancellationToken cancellationToken = default)
     {
-        var user = await _userDbSet.SingleOrDefaultAsync(u => u.Username == username);
-        return user?.ToDto();
+        return _userDbSet.SingleOrDefaultAsync(u => u.Username == username, cancellationToken);
+    }
+
+    public async Task<UserApplication?> GetByUsernameOrEmailAsync(string? username = null, string? email = null, CancellationToken cancellationToken = default)
+    {
+        return await _userDbSet.SingleOrDefaultAsync(u => u.Username == username || u.EmailAddress == email, cancellationToken);
     }
 }
