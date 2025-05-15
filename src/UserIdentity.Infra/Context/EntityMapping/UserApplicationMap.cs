@@ -54,11 +54,6 @@ public class UserApplicationMap : IEntityTypeConfiguration<UserApplication>
             .HasColumnName("updated_at")
             .IsRequired(false);
 
-        builder.Property(x => x.GoogleId)
-            .HasColumnName("google_id")
-            .IsRequired(false)
-            .HasMaxLength(128);
-
         builder.Property(x => x.PasswordHash)
             .HasColumnName("password_hash")
             .IsRequired()
@@ -78,6 +73,21 @@ public class UserApplicationMap : IEntityTypeConfiguration<UserApplication>
             .HasColumnName("refresh_token_expiry_time")
             .IsRequired(false);
 
+
+        builder.Property(x => x.ExternalLogin)
+            .HasColumnName("external_login")
+            .IsRequired();
+
+        builder.Property(x => x.ExternalProvider)
+            .HasColumnName("external_login_provider")
+            .IsRequired(false)
+            .HasMaxLength(32);
+
+        builder.Property(x => x.ExternalProviderId)
+            .HasColumnName("external_login_provider_id")
+            .IsRequired(false)
+            .HasMaxLength(256);
+
         // indexes
         builder.HasIndex(x => x.Username)
             .HasDatabaseName("idx_user_application_username")
@@ -85,10 +95,6 @@ public class UserApplicationMap : IEntityTypeConfiguration<UserApplication>
 
         builder.HasIndex(x => x.EmailAddress)
             .HasDatabaseName("idx_user_application_email_address")
-            .IsUnique();
-
-        builder.HasIndex(x => x.GoogleId)
-            .HasDatabaseName("idx_user_application_google_id")
             .IsUnique();
     }
 }
