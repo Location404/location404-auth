@@ -1,10 +1,6 @@
 using System.Text;
-
 using MediatR;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,9 +8,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 using UserIdentity.Application.Common.Interfaces;
+using UserIdentity.Application.Features.Authentication.Commands.RegisterUser;
 using UserIdentity.Application.Features.Authentication.Interfaces;
 using UserIdentity.Application.Features.UserManagement;
-using UserIdentity.Application.Features.UserManagement.Commands.RegisterUser;
 using UserIdentity.Infra.Context;
 using UserIdentity.Infra.Persistence;
 using UserIdentity.Infra.Services;
@@ -34,9 +30,12 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IServiceCollection AddUserIdentityAuthentication(this IServiceCollection services, IConfiguration configuration)
+    private static void AddUserIdentityAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         var jwtSettings = configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>();
+        ArgumentNullException.ThrowIfNull(jwtSettings, nameof(jwtSettings));
+
+        var googleLoginSettings = configuration.GetSection(GoogleLoginSettings.SectionName).Get<GoogleLoginSettings>();
         ArgumentNullException.ThrowIfNull(jwtSettings, nameof(jwtSettings));
 
         services.AddAuthorization();
@@ -47,37 +46,27 @@ public static class DependencyInjection
         })
         .AddJwtBearer(options =>
         {
-            options.SaveToken = true;
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtSettings!.Issuer,
+                ValidIssuer = jwtSettings.Issuer,
                 ValidAudience = jwtSettings.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
-                RequireExpirationTime = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
             };
-
-            options.Events = new JwtBearerEvents
-            {
-                OnAuthenticationFailed = context =>
-                {
-                    if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                    {
-                        context.Response.Headers.Append("Token-Expired", "true");
-                    }
-                    return Task.CompletedTask;
-                }
-            };
+        })
+        .AddGoogle(options =>
+        {
+            options.ClientId = googleLoginSettings!.ClientId;
+            options.ClientSecret = googleLoginSettings.ClientSecret;
+            options.CallbackPath = "/signin-google";
         });
-
-        return services;
     }
 
 
-    public static IServiceCollection AddUserIdentityDbContext(this IServiceCollection services, IConfiguration configuration)
+    private static void AddUserIdentityDbContext(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<UserIdentityContext>(op =>
         {
@@ -89,11 +78,9 @@ public static class DependencyInjection
             op.UseNpgsql(configuration.GetConnectionString("UserIdentityDb"));
 #endif
         });
-
-        return services;
     }
 
-    public static IServiceCollection AddUserIdentityServices(this IServiceCollection services)
+    private static void AddUserIdentityServices(this IServiceCollection services)
     {
         services.AddSingleton<IPasswordService, PasswordService>();
         services.AddSingleton<ITokenService, JwtTokenService>();
@@ -101,15 +88,11 @@ public static class DependencyInjection
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-        return services;
     }
-
-
-    public static IServiceCollection AddUserIdentitySettings(this IServiceCollection services, IConfiguration configuration)
+    
+    private static void AddUserIdentitySettings(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
-
-        return services;
+        services.Configure<GoogleLoginSettings>(configuration.GetSection(GoogleLoginSettings.SectionName));
     }
 }
