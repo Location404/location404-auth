@@ -36,7 +36,7 @@ public static class DependencyInjection
         ArgumentNullException.ThrowIfNull(jwtSettings, nameof(jwtSettings));
 
         var googleLoginSettings = configuration.GetSection(GoogleLoginSettings.SectionName).Get<GoogleLoginSettings>();
-        ArgumentNullException.ThrowIfNull(jwtSettings, nameof(jwtSettings));
+        ArgumentNullException.ThrowIfNull(jwtSettings, nameof(googleLoginSettings));
 
         services.AddAuthorization();
         services.AddAuthentication(options =>

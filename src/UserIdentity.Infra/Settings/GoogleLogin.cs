@@ -5,9 +5,8 @@ namespace UserIdentity.Infra.Settings;
 
 public record GoogleLoginSettings : ExternalLoginSettingsBase
 {
-    public GoogleLoginSettings(string clientId, string clientSecret, string callbackPath) 
-        : base(clientId, clientSecret, callbackPath)
-    {
-        SectionName += "GoogleLogin";
-    }
+    public static string SectionName = ExternalLoginSectionName + "Google";
+
+    public GoogleLoginSettings(string clientId, string clientSecret, string clientCallbackUrl)
+        : base(clientId, clientSecret, clientCallbackUrl) { }
 }
