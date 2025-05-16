@@ -7,9 +7,9 @@ public sealed partial class EmailAddress : Common.ValueObject
     public EmailAddress(string emailAddress)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(emailAddress);
-        if (EmailAddressPattern().IsMatch(emailAddress))
+        if (!EmailAddressPattern().IsMatch(emailAddress))
         {
-            throw new ArgumentException(nameof(EmailAddress));
+            throw new ArgumentException(nameof(EmailAddress), "Invalid email address format.");
         }
 
         Value = emailAddress;
