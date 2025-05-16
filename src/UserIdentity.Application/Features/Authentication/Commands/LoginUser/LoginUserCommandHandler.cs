@@ -1,5 +1,4 @@
 using MediatR;
-
 using UserIdentity.Application.Common.Interfaces;
 using UserIdentity.Application.Common.Results;
 using UserIdentity.Application.Features.Authentication.Interfaces;
@@ -40,13 +39,13 @@ public class LoginUserCommandHandler(
 
         var (token, refreshToken) = tokenService.GenerateTokens(user);
 
-        var SignInUserResult = new LoginUserCommandResult(
+        var signInUserResult = new LoginUserCommandResult(
             UserId: user.Id,
             AccessToken: token,
             RefreshToken: refreshToken,
             AccessTokenExpiration: tokenService.GetAccessTokenExpirationTime(),
             RefreshTokenExpiration: tokenService.GetRefreshTokenExpirationTime());
 
-        return Result<LoginUserCommandResult>.Success(SignInUserResult);
+        return Result<LoginUserCommandResult>.Success(signInUserResult);
     }
 }
