@@ -1,7 +1,5 @@
 using MediatR;
-
 using Microsoft.Extensions.Logging;
-
 using UserIdentity.Application.Common.Interfaces;
 using UserIdentity.Application.Common.Results;
 using UserIdentity.Application.Features.Authentication.Interfaces;
@@ -22,8 +20,8 @@ public class LoginUserCommandHandler(
         {
             logger.LogInformation("Starting user login process for email: {Email}", request.Email);
             var userExist = await unitOfWork.UserRepository.ExistsByUsernameOrEmailAsync(
-            email: request.Email,
-            cancellationToken: cancellationToken);
+                email: request.Email,
+                cancellationToken: cancellationToken);
 
             if (!userExist)
             {
