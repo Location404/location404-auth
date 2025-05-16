@@ -44,7 +44,7 @@ public class RegisterUserCommandHandler(
         catch
         {
             await transaction.RollbackAsync(cancellationToken);
-            return Result<RegisterUserResult>.Failure(Error.InternalServerError("An error occurred while processing your request."));
+            throw;
         }
         finally
         {

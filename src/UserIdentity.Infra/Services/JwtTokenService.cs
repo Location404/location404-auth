@@ -58,14 +58,16 @@ public class JwtTokenService(IOptions<JwtSettings> jwtSettings) : ITokenService
         return (accessToken, refreshToken);
     }
 
-    public DateTime GetAccessTokenExpirationTime()
-    {
-        throw new NotImplementedException();
-    }
-
     public DateTime GetAccessTokenExpirationTime(DateTime now)
     {
-        throw new NotImplementedException();
+        var expirationTime = now.AddDays(_jwtSettings.RefreshTokenExpirationDays);
+        return expirationTime;
+    }
+
+    public DateTime GetRefreshTokenExpirationTime(DateTime now)
+    {
+        var expirationTime = now.AddDays(_jwtSettings.RefreshTokenExpirationDays);
+        return expirationTime;
     }
 
     /// <inheritdoc/>
@@ -85,13 +87,9 @@ public class JwtTokenService(IOptions<JwtSettings> jwtSettings) : ITokenService
         var tokenHandler = new JwtSecurityTokenHandler();
         var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
 
-        return securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase)
+        return securityToken is not JwtSecurityToken jwtSecurityToken
+            || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase)
             ? throw new SecurityTokenException("Invalid token")
             : principal;
-    }
-
-    public DateTime GetRefreshTokenExpirationTime()
-    {
-        throw new NotImplementedException();
     }
 }

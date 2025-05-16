@@ -34,7 +34,6 @@ public interface ITokenService
     /// <returns>Uma tupla contendo o token de acesso e o token de atualização.</returns>
     (string token, string refreshToken) GenerateTokens(UserApplication user);
 
-    public DateTime GetRefreshTokenExpirationTime();
-    public DateTime GetAccessTokenExpirationTime();
+    public DateTime GetRefreshTokenExpirationTime(DateTime now);
     public DateTime GetAccessTokenExpirationTime(DateTime now);
 }
