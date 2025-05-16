@@ -1,11 +1,11 @@
 @url = http://localhost:5248
 
-POST {{url}}/api/v1/user/register
+POST {{url}}/api/v1/auth/register
 Accept: application/json
 Content-Type: application/json
 
 {
-    "Username": "username",
-    "Password": "password",
-    "EmailAddress": "emailaddress"
+    "Username": "user",
+    "Password": "passwordexele",
+    "EmailAddress": "email@addressexple.com"
 }

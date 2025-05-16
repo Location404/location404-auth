@@ -13,6 +13,6 @@ app.UseHttpsRedirection();
 app.MapOpenApi();
 
 app.MapUserEndpoints();
-app.MapGet("/", () => "Hello World!");
+app.MapAuthenticationEndpoints();
 
 app.Run();
