@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UserIdentity.Infra.Context;
@@ -11,9 +12,11 @@ using UserIdentity.Infra.Context;
 namespace UserIdentity.Infra.Migrations
 {
     [DbContext(typeof(UserIdentityContext))]
-    partial class UserIdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20250515235629_AddExternalLoginUser")]
+    partial class AddExternalLoginUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
