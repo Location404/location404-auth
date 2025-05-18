@@ -1,4 +1,3 @@
--- rollback-migration.lua
 local args = {...}
 local target = args[1] or "0"
 

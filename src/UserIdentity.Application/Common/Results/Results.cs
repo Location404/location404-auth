@@ -1,10 +1,9 @@
-using UserIdentity.Domain.Common.Results;
-
 namespace UserIdentity.Application.Common.Results;
 
 public class Result<T>
 {
     public bool IsSuccess { get; }
+    public bool IsFailure => !IsSuccess;
     public T? Value { get; }
     public Error? Error { get; }
 

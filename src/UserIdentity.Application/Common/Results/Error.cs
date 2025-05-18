@@ -1,6 +1,6 @@
-namespace UserIdentity.Domain.Common.Results;
+namespace UserIdentity.Application.Common.Results;
 
-public record Error(int Code, string Message = "")
+public record Error(int StatusCode, string Message = "")
 {
     public static Error NotFound(string message = "Not Found") => new(404, message);
     public static Error BadRequest(string message = "Bad Request") => new(400, message);
