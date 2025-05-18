@@ -1,11 +1,8 @@
 using MediatR;
-
 using Microsoft.Extensions.Logging;
-
 using UserIdentity.Application.Common.Interfaces;
 using UserIdentity.Application.Common.Results;
 using UserIdentity.Application.Features.Authentication.Interfaces;
-using UserIdentity.Domain.Common.Results;
 using UserIdentity.Domain.Entities;
 
 namespace UserIdentity.Application.Features.Authentication.Commands.RegisterUser;
