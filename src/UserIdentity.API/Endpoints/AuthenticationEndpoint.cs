@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using UserIdentity.Application.Features.Authentication.Commands.LoginUser;
 using UserIdentity.Application.Features.Authentication.Commands.RegisterUser;
 
@@ -11,7 +10,14 @@ public static class AuthenticationEndpoint
     {
         var group = endpoint.MapGroup("/api/v1/auth").WithTags("Authentication");
 
-        group.MapPost("/register", async ([FromServices] ISender mediator, [FromBody] RegisterUserCommand command) =>
+        group.MapPost("/register", RegisterUserHandler).AllowAnonymous();
+
+        group.MapPost("/login", LoginUserHandler).RequireAuthorization();
+
+
+        #region [Endpoints Handlers]
+
+        static async Task<IResult> RegisterUserHandler(ISender mediator, RegisterUserCommand command)
         {
             const string uri = "/api/v1/auth/register/";
             var result = await mediator.Send(command);
@@ -19,15 +25,17 @@ public static class AuthenticationEndpoint
             return result.IsSuccess
                 ? Results.Created(uri + result.Value?.UserId, result.Value)
                 : Results.Problem(title: result.Error?.Message, statusCode: result.Error?.StatusCode);
-        });
-
-        group.MapPost("/login", async ([FromServices] ISender mediator, [FromBody] LoginUserCommand command) =>
+        }
+        
+        static async Task<IResult> LoginUserHandler(ISender mediator, LoginUserCommand command)
         {
             var result = await mediator.Send(command);
 
             return result.IsSuccess
                 ? Results.Ok(result.Value)
                 : Results.Problem(title: result.Error?.Message, statusCode: result.Error?.StatusCode);
-        });
+        }
+
+        #endregion
     }
 }
