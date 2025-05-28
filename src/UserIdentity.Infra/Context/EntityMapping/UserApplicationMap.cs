@@ -31,7 +31,7 @@ public class UserApplicationMap : IEntityTypeConfiguration<UserApplication>
             .IsRequired()
             .HasMaxLength(16);
 
-        builder.Property(x => x.EmailAddress)
+        builder.Property(x => x.Email)
             .HasColumnName("email_address")
             .IsRequired()
             .HasMaxLength(128);
@@ -93,7 +93,7 @@ public class UserApplicationMap : IEntityTypeConfiguration<UserApplication>
             .HasDatabaseName("idx_user_application_username")
             .IsUnique();
 
-        builder.HasIndex(x => x.EmailAddress)
+        builder.HasIndex(x => x.Email)
             .HasDatabaseName("idx_user_application_email_address")
             .IsUnique();
     }

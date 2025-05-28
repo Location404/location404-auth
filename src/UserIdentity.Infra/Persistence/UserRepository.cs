@@ -17,12 +17,12 @@ public class UserRepository(UserIdentityContext context) : IUserRepository
 
     public async Task<bool> ExistsByUsernameOrEmailAsync(string? username = null, string? email = null, CancellationToken cancellationToken = default)
     {
-        return await _userDbSet.AnyAsync(u => u.Username == username || u.EmailAddress == email, cancellationToken);
+        return await _userDbSet.AnyAsync(u => u.Username == username || u.Email == email, cancellationToken);
     }
 
     public async Task<UserApplication?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
-        return await _userDbSet.SingleOrDefaultAsync(u => u.EmailAddress == email, cancellationToken);
+        return await _userDbSet.SingleOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
     public Task<UserApplication?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -37,6 +37,6 @@ public class UserRepository(UserIdentityContext context) : IUserRepository
 
     public async Task<UserApplication?> GetByUsernameOrEmailAsync(string? username = null, string? email = null, CancellationToken cancellationToken = default)
     {
-        return await _userDbSet.SingleOrDefaultAsync(u => u.Username == username || u.EmailAddress == email, cancellationToken);
+        return await _userDbSet.SingleOrDefaultAsync(u => u.Username == username || u.Email == email, cancellationToken);
     }
 }

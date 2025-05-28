@@ -2,19 +2,19 @@ using System.Text.RegularExpressions;
 
 namespace UserIdentity.Domain.ValueObject;
 
-public sealed partial class EmailAddress : Common.ValueObject
+public sealed partial class Email : Common.ValueObject
 {
-    public EmailAddress(string emailAddress)
+    public Email(string email)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(emailAddress);
-        if (!EmailAddressPattern().IsMatch(emailAddress))
+        ArgumentException.ThrowIfNullOrWhiteSpace(email);
+        if (!EmailPattern().IsMatch(email))
         {
-            throw new ArgumentException(nameof(EmailAddress), "Invalid email address format.");
+            throw new ArgumentException(nameof(Email), "Invalid email address format.");
         }
 
-        Value = emailAddress;
+        Value = email;
     }
 
     [GeneratedRegex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase | RegexOptions.Compiled, "")]
-    private static partial Regex EmailAddressPattern();
+    private static partial Regex EmailPattern();
 }

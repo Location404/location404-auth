@@ -11,7 +11,7 @@ public static class UserApplicationExtensions
             id: user.Id,
             username: user.Username,
             displayName: user.DisplayName,
-            emailAddress: user.EmailAddress,
+            email: user.Email,
             profilePictureUrl: user.ProfilePictureUrl,
             preferredLanguage: user.PreferredLanguage);
     }

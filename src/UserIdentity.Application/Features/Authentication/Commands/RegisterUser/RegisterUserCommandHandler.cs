@@ -15,7 +15,7 @@ public class RegisterUserCommandHandler(
 {
     public async Task<Result<RegisterUserResult>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        return await unitOfWork.UserRepository.ExistsByUsernameOrEmailAsync(request.Username, request.EmailAddress, cancellationToken)
+        return await unitOfWork.UserRepository.ExistsByUsernameOrEmailAsync(request.Username, request.Email, cancellationToken)
             ? Result<RegisterUserResult>.Failure(Error.Conflict("User with the same username or email already exists."))
             : await SignUpUserAsync(request, cancellationToken);
     }
@@ -28,7 +28,7 @@ public class RegisterUserCommandHandler(
         try
         {
             (string hash, string salt) = passwordService.CreatePasswordHash(request.Password);
-            var user = new UserApplication(request.Username, request.EmailAddress, hash, salt);
+            var user = new UserApplication(request.Username, request.Email, hash, salt);
 
             await unitOfWork.UserRepository.AddAsync(user, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
@@ -36,7 +36,7 @@ public class RegisterUserCommandHandler(
             (string token, string refreshToken) = tokenService.GenerateTokens(user);
             await transaction.CommitAsync(cancellationToken);
 
-            return Result<RegisterUserResult>.Success(new RegisterUserResult(user.Id, request.EmailAddress, token, refreshToken));
+            return Result<RegisterUserResult>.Success(new RegisterUserResult(user.Id, request.Email, token, refreshToken));
         }
         catch
         {
