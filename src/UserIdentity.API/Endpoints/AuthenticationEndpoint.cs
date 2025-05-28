@@ -12,7 +12,7 @@ public static class AuthenticationEndpoint
 
         group.MapPost("/register", RegisterUserHandler).AllowAnonymous();
 
-        group.MapPost("/login", LoginUserHandler).RequireAuthorization();
+        group.MapPost("/login", LoginUserHandler).AllowAnonymous();
 
 
         #region [Endpoints Handlers]
