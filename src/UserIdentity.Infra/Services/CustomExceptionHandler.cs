@@ -22,13 +22,13 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
         problemDetails.Extensions["exceptionType"] = exception.GetType().Name;
         problemDetails.Extensions["traceId"] = httpContext.TraceIdentifier;
 
-#if DEBUG
+# if DEBUG
         problemDetails.Detail = exception.ToString();
 #endif
 
         httpContext.Response.StatusCode = httpContext.Response.StatusCode;
         httpContext.Response.ContentType = "application/problem+json";
-
+        
         await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
         return true;
     }
