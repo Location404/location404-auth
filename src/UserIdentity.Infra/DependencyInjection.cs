@@ -88,6 +88,8 @@ public static class DependencyInjection
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.AddExceptionHandler<CustomExceptionHandler>();
     }
     
     private static void AddUserIdentitySettings(this IServiceCollection services, IConfiguration configuration)

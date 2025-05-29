@@ -15,4 +15,6 @@ app.MapOpenApi();
 app.MapUserEndpoints();
 app.MapAuthenticationEndpoints();
 
+app.UseExceptionHandler("/error");
+
 app.Run();
