@@ -116,7 +116,7 @@ public sealed class UnitOfWork(UserIdentityContext dbContext, IUserRepository us
         {
             _dbContext?.Dispose();
         }
-        
+
         _disposed = true;
     }
 
