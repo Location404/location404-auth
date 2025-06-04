@@ -1,6 +1,7 @@
 using System.Text;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -82,7 +83,7 @@ public static class DependencyInjection
 
     private static void AddUserIdentityServices(this IServiceCollection services)
     {
-        services.AddSingleton<IPasswordService, PasswordService>();
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<ITokenService, JwtTokenService>();
         services.AddMediatR(typeof(RegisterUserCommand).Assembly);
 

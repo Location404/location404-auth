@@ -1,6 +1,6 @@
 namespace UserIdentity.Application.Features.Authentication.Interfaces;
 
-public interface IPasswordService
+public interface IPasswordHasher
 {
     /// <summary>
     /// Cria um hash e um salt para a senha fornecida.

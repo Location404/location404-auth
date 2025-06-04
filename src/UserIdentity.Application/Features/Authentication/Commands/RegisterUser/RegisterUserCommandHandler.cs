@@ -9,7 +9,7 @@ namespace UserIdentity.Application.Features.Authentication.Commands.RegisterUser
 
 public class RegisterUserCommandHandler(
     IUnitOfWork unitOfWork,
-    IPasswordService passwordService,
+    IPasswordHasher passwordHasher,
     ITokenService tokenService,
     ILogger<RegisterUserCommandHandler> logger) : IRequestHandler<RegisterUserCommand, Result<RegisterUserResult>>
 {
@@ -27,7 +27,7 @@ public class RegisterUserCommandHandler(
 
         try
         {
-            (string hash, string salt) = passwordService.CreatePasswordHash(request.Password);
+            (string hash, string salt) = passwordHasher.CreatePasswordHash(request.Password);
             var user = new UserApplication(request.Username, request.Email, hash, salt);
 
             await unitOfWork.UserRepository.AddAsync(user, cancellationToken);

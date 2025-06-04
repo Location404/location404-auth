@@ -8,7 +8,7 @@ namespace UserIdentity.Application.Features.Authentication.Commands.LoginUser;
 
 public class LoginUserCommandHandler(
     ITokenService tokenService,
-    IPasswordService passwordService,
+    IPasswordHasher passwordHasher,
     IUnitOfWork unitOfWork,
     ILogger<LoginUserCommandHandler> logger)
     : IRequestHandler<LoginUserCommand, Result<LoginUserCommandResult>>
@@ -31,7 +31,7 @@ public class LoginUserCommandHandler(
                 email: request.Email,
                 cancellationToken: cancellationToken);
 
-            var isAuthenticated = passwordService.VerifyPasswordHash(
+            var isAuthenticated = passwordHasher.VerifyPasswordHash(
                 password: request.Password,
                 storedHash: user!.PasswordHash,
                 storedSalt: user.PasswordSalt);
