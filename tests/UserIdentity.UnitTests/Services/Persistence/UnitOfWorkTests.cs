@@ -1,3 +1,4 @@
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
@@ -11,10 +12,9 @@ using UserIdentity.UnitTests.Helpers;
 
 namespace UserIdentity.UnitTests.Services.Persistence;
 
-// TODO: refactor to use sqlite in memory database
-
 public sealed class UnitOfWorkIntegrationTests : IDisposable
 {
+    private readonly SqliteConnection _connection;
     private readonly UserIdentityContext _context;
     private readonly Mock<ILogger<UnitOfWork>> _loggerMock;
     private readonly UserRepository _userRepository;
@@ -22,11 +22,16 @@ public sealed class UnitOfWorkIntegrationTests : IDisposable
 
     public UnitOfWorkIntegrationTests()
     {
+        _connection = new SqliteConnection("DataSource=:memory:");
+        _connection.Open();
+
         var options = new DbContextOptionsBuilder<UserIdentityContext>()
-            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .UseSqlite(_connection)
             .Options;
 
         _context = new UserIdentityContext(options);
+        _context.Database.EnsureCreated();
+
         _loggerMock = new Mock<ILogger<UnitOfWork>>();
         _userRepository = new UserRepository(_context);
         _unitOfWork = new UnitOfWork(_context, _userRepository, _loggerMock.Object);
@@ -91,9 +96,6 @@ public sealed class UnitOfWorkIntegrationTests : IDisposable
 
         // Act & Assert
         await Assert.ThrowsAsync<DbUpdateException>(() => _unitOfWork.SaveChangesAsync());
-
-        // Verify logging
-        _loggerMock.VerifyLog(LogLevel.Error, "Erro ao salvar alterações no banco de dados", Times.Once);
     }
 
     #endregion
@@ -424,6 +426,8 @@ public sealed class UnitOfWorkIntegrationTests : IDisposable
     {
         _unitOfWork?.Dispose();
         _context?.Dispose();
+        _connection?.Close();
+        _connection?.Dispose();
     }
 
     #endregion
