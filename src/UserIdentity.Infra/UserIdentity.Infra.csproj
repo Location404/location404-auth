@@ -5,18 +5,19 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4"/>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.4"/>
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4"/>
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.8.0"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.4"/>
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.4"/>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.4"/>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.4"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.4" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.8.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.4" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../UserIdentity.Application/UserIdentity.Application.csproj"/>
-    <ProjectReference Include="../UserIdentity.Domain/UserIdentity.Domain.csproj"/>
+    <ProjectReference Include="../UserIdentity.Application/UserIdentity.Application.csproj" />
+    <ProjectReference Include="../UserIdentity.Domain/UserIdentity.Domain.csproj" />
+    <ProjectReference Include="..\..\libs\ObservabilitySdk\ObservabilitySdk.csproj" />
   </ItemGroup>
 </Project>
