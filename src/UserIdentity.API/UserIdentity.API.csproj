@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Location404.Observability" Version="1.0.0-preview.20250609140907" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
     </ItemGroup>
 
