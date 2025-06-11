@@ -34,10 +34,10 @@ public static class DependencyInjection
     private static void AddUserIdentityAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         var jwtSettings = configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>();
-        ArgumentNullException.ThrowIfNull(jwtSettings, nameof(jwtSettings));
+        // ArgumentNullException.ThrowIfNull(jwtSettings, nameof(jwtSettings));
 
         var googleLoginSettings = configuration.GetSection(GoogleLoginSettings.SectionName).Get<GoogleLoginSettings>();
-        ArgumentNullException.ThrowIfNull(jwtSettings, nameof(googleLoginSettings));
+        // ArgumentNullException.ThrowIfNull(jwtSettings, nameof(googleLoginSettings));
 
         services.AddAuthorization();
         services.AddAuthentication(options =>
@@ -45,18 +45,15 @@ public static class DependencyInjection
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         })
-        .AddJwtBearer(options =>
+        .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
         {
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtSettings.Issuer,
-                ValidAudience = jwtSettings.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
-            };
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings!.Issuer,
+            ValidAudience = jwtSettings.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
         })
         .AddGoogle(options =>
         {

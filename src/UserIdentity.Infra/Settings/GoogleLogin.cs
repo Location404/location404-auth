@@ -1,4 +1,3 @@
-
 using UserIdentity.Infra.Common;
 
 namespace UserIdentity.Infra.Settings;

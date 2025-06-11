@@ -11,7 +11,6 @@ public static class AuthenticationEndpoint
         var group = endpoint.MapGroup("/api/v1/auth").WithTags("Authentication");
 
         group.MapPost("/register", RegisterUserHandler).AllowAnonymous();
-
         group.MapPost("/login", LoginUserHandler).AllowAnonymous();
 
 
