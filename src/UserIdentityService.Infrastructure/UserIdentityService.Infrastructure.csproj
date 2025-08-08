@@ -5,9 +5,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8"/>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../UserIdentityService.Domain/UserIdentityService.Domain.csproj" />
+    <ProjectReference Include="../UserIdentityService.Application/UserIdentityService.Application.csproj"/>
+    <ProjectReference Include="../UserIdentityService.Domain/UserIdentityService.Domain.csproj"/>
   </ItemGroup>
 </Project>
