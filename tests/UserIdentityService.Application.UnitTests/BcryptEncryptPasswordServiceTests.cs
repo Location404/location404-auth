@@ -1,11 +1,12 @@
 using Shouldly;
+using UserIdentityService.Application.Common.Interfaces;
 using UserIdentityService.Infrastructure.Services;
-namespace UserIdentityService.UnitTests;
 
+namespace UserIdentityService.Application.UnitTests;
 
 public class BcryptEncryptPasswordServiceTests
 {
-    private readonly BcryptEncryptPasswordService _passwordService;
+    private readonly IEncryptPasswordService _passwordService;
 
     public BcryptEncryptPasswordServiceTests()
     {

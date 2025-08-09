@@ -1,5 +1,4 @@
 using Shouldly;
-
 using UserIdentityService.Domain.Entities;
 using UserIdentityService.Domain.ValueObjects;
 

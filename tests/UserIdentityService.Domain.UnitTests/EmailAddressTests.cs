@@ -1,7 +1,7 @@
 ﻿using UserIdentityService.Domain.ValueObjects;
 using Shouldly;
 
-namespace UserIdentityService.UnitTests;
+namespace UserIdentityService.Domain.UnitTests;
 
 public class EmailAddressTests
 {
