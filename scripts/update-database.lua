@@ -1,4 +1,4 @@
-local command = "dotnet ef database update --project ../src/UserIdentity.Infra --startup-project ../src/UserIdentity.API"
+local command = "dotnet ef database update --project ../src/UserIdentityService.Infrastructure --startup-project ../src/UserIdentityService.API"
 print("Executando:", command)
 
 os.execute(command)
