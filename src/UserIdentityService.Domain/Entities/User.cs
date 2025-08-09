@@ -8,7 +8,7 @@ public class User
     public EmailAddress Email { get; private set; }
     public string? Password { get; private set; }
     public string Username { get; private set; }
-    public string? ProfileImageUrl { get; private set; }
+    public byte[]? ProfileImage { get; private set; }
 
     public bool EmailVerified { get; private set; }
     public bool IsActive { get; private set; }
@@ -56,11 +56,11 @@ public class User
         return user;
     }
 
-    public void UpdateProfile(string? username, string? profileImageUrl = null)
+    public void UpdateProfile(string? username, byte[]? profileImage = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(username, nameof(username));
 
-        ProfileImageUrl = profileImageUrl;
+        ProfileImage = profileImage;
         Username = username;
         UpdatedAt = DateTime.UtcNow;
     }
