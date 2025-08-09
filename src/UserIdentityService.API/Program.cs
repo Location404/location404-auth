@@ -10,4 +10,6 @@ var app = builder.Build();
 app.MapOpenApi();
 app.UseHttpsRedirection();
 
+app.UseExceptionHandler("/error");
+
 app.Run();
