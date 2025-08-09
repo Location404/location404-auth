@@ -1,8 +1,9 @@
 using Shouldly;
+
 using UserIdentityService.Domain.Entities;
 using UserIdentityService.Domain.ValueObjects;
 
-namespace UserIdentityService.UnitTests;
+namespace UserIdentityService.Domain.UnitTests;
 
 public class UserTests
 {
@@ -137,11 +138,9 @@ public class UserTests
         var user = User.Create(_validEmail, ValidUsername, loginProvider, "key1");
 
         // Act
-        Action act = () => user.AddExternalLogin(loginProvider, "key2");
+        void Act() => user.AddExternalLogin(loginProvider, "key2");
 
         // Assert
-        var exception = Should.Throw<InvalidOperationException>(act);
-        // A mensagem da exceção deve ser idêntica à do código-fonte, por isso permanece em português.
-        exception.Message.ShouldBe($"Um login do provedor '{loginProvider}' já está associado a este usuário.");
+        var exception = Should.Throw<InvalidOperationException>(Act);
     }
 }

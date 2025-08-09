@@ -14,7 +14,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/UserIdentityService.Application/UserIdentityService.Application.csproj"/>
-    <ProjectReference Include="../../src/UserIdentityService.Domain/UserIdentityService.Domain.csproj"/>
     <ProjectReference Include="../../src/UserIdentityService.Infrastructure/UserIdentityService.Infrastructure.csproj"/>
   </ItemGroup>
   <ItemGroup>
