@@ -32,11 +32,12 @@ public class UserMapping : IEntityTypeConfiguration<User>
             .HasMaxLength(256)
             .IsRequired(false);
 
-        builder.Property(u => u.ProfileImageUrl)
-            .HasColumnName("profile_image_url")
+        builder.Property(u => u.ProfileImage)
+            .HasColumnType("bytea")
+            .HasColumnName("profile_image")
             .HasMaxLength(512);
 
-        builder.Property(u => u.PreferredLanguage)
+        builder.Property(u => u.PreferredLanguage)  
             .HasColumnName("preferred_language")
             .IsRequired()
             .HasMaxLength(10);
