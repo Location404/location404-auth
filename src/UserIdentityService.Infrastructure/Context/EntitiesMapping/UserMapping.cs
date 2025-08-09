@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UserIdentityService.Domain.Entities;
+using UserIdentityService.Domain.ValueObjects;
 
 namespace UserIdentityService.Infrastructure.Context.EntitiesMapping;
 
@@ -14,6 +15,9 @@ public class UserMapping : IEntityTypeConfiguration<User>
         builder.Property(u => u.Id).HasColumnName("id");
 
         builder.Property(u => u.Email)
+            .HasConversion(
+                email => email.Value,
+                value => EmailAddress.Create(value))
             .HasColumnName("email")
             .IsRequired()
             .HasMaxLength(256);
@@ -58,10 +62,10 @@ public class UserMapping : IEntityTypeConfiguration<User>
             .IsRequired(false);
 
         builder.HasMany(u => u.ExternalLogins)
-            .WithOne()
+            .WithOne(el => el.User)
             .HasForeignKey(el => el.UserId)
             .OnDelete(DeleteBehavior.Cascade)
-            .HasConstraintName("fk_external_logins_users");
+            .HasConstraintName("fk_users_external_logins");
 
         builder.HasIndex(u => u.Email)
             .IsUnique()

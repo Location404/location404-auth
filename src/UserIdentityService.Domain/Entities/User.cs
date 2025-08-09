@@ -23,13 +23,12 @@ public class User
 
     public ICollection<ExternalLogin> ExternalLogins { get; private set; }
 
-    private User(string email, string username, string? password = null)
+    private User(EmailAddress email, string username, string? password = null)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(email, nameof(email));
         ArgumentException.ThrowIfNullOrWhiteSpace(username, nameof(username));
 
         Id = Guid.NewGuid();
-        Email = EmailAddress.Create(email);
+        Email = email;
         Username = username;
         Password = password;
         EmailVerified = false;
@@ -41,14 +40,14 @@ public class User
         ExternalLogins = [];
     }
 
-    public static User Create(string email, string username, string password)
+    public static User Create(EmailAddress email, string username, string password)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(password, nameof(password));
 
         return new User(email, username, password);
     }
 
-    public static User Create(string email, string username, string loginProvider, string providerKey)
+    public static User Create(EmailAddress email, string username, string loginProvider, string providerKey)
     {
         var user = new User(email, username);
         user.AddExternalLogin(loginProvider, providerKey);
