@@ -7,17 +7,17 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["src/UserIdentity.API/UserIdentity.API.csproj", "src/UserIdentity.API/"]
-RUN dotnet restore "src/UserIdentity.API/UserIdentity.API.csproj"
+COPY ["src/UserIdentityService.API/UserIdentityService.API.csproj", "src/UserIdentityService.API/"]
+RUN dotnet restore "src/UserIdentityService.API/UserIdentityService.API.csproj"
 COPY . .
-WORKDIR "/src/src/UserIdentity.API"
-RUN dotnet build "./UserIdentity.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/src/UserIdentityService.API"
+RUN dotnet build "./UserIdentityService.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./UserIdentity.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./UserIdentityService.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "UserIdentity.API.dll"]
+ENTRYPOINT ["dotnet", "UserIdentityService.API.dll"]
