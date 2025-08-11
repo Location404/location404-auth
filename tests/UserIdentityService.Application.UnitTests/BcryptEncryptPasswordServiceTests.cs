@@ -27,8 +27,6 @@ public class BcryptEncryptPasswordServiceTests
         encryptedPassword.ShouldNotBe(password);
     }
 
-
-
     [Theory]
 #pragma warning disable xUnit1012
     [InlineData(null)]
@@ -57,8 +55,6 @@ public class BcryptEncryptPasswordServiceTests
         // Assert
         result.ShouldBeTrue();
     }
-
-
 
     [Fact]
     public void Verify_WithIncorrectPassword_ShouldReturnFalse()

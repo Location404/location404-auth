@@ -1,6 +1,5 @@
 namespace UserIdentityService.Domain.ValueObjects;
 
-
 public readonly record struct Level
 {
     private const int PointsMultiplier = 80;

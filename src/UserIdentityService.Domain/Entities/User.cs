@@ -49,6 +49,10 @@ public class User
 
     public static User Create(EmailAddress email, string username, string loginProvider, string providerKey)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(loginProvider, nameof(loginProvider));
+        ArgumentException.ThrowIfNullOrWhiteSpace(providerKey, nameof(providerKey));
+        ArgumentException.ThrowIfNullOrWhiteSpace(username, nameof(username));
+
         var user = new User(email, username);
         user.AddExternalLogin(loginProvider, providerKey);
         user.EmailVerified = true;
