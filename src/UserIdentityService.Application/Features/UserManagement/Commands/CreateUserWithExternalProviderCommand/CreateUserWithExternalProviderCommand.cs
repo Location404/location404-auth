@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using LiteBus.Commands.Abstractions;
+using UserIdentityService.Application.Common.Result;
 
 namespace UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithExternalProviderCommand;
 
-public sealed class CreateUserWithExternalProviderCommand
+public sealed class CreateUserWithExternalProviderCommand : ICommand<Result<CreateUserResult>>
 {
     [EmailAddress, Required]
     public required string Email { get; set; }
