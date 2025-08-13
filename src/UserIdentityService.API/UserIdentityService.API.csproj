@@ -1,18 +1,15 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
+<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>7cd3e6fa-8a56-47cb-bd82-03c8637faacf</UserSecretsId>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4"/>
+    <PackageReference Include="Scalar.AspNetCore" Version="2.6.9"/>
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="../UserIdentityService.Infrastructure/UserIdentityService.Infrastructure.csproj" />
+    <ProjectReference Include="../UserIdentityService.Infrastructure/UserIdentityService.Infrastructure.csproj"/>
   </ItemGroup>
-
 </Project>
