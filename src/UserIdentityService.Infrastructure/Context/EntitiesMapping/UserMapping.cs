@@ -7,6 +7,14 @@ namespace UserIdentityService.Infrastructure.Context.EntitiesMapping;
 
 public class UserMapping : IEntityTypeConfiguration<User>
 {
+    /// <summary>
+    /// Configures the EF Core mapping for the User entity (table "users").
+    /// </summary>
+    /// <remarks>
+    /// Applies column mappings, constraints and conversions for User properties (including Email value-object conversion),
+    /// sets up the one-to-many relationship to ExternalLogins with cascade delete, and creates a unique index on Email.
+    /// </remarks>
+    /// <param name="builder">The EntityTypeBuilder for the User entity to configure.</param>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable("users");

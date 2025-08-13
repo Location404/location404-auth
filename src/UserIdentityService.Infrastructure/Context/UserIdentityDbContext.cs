@@ -8,6 +8,10 @@ public class UserIdentityDbContext(DbContextOptions<UserIdentityDbContext> optio
     public DbSet<User> Users { get; set; }
     public DbSet<ExternalLogin> ExternalLogins { get; set; }
 
+    /// <summary>
+    /// Configures the EF Core model for this context by applying IEntityTypeConfiguration implementations found in the containing assembly.
+    /// </summary>
+    /// <param name="modelBuilder">The model builder used to configure entity mappings; this method applies all configurations from the assembly that contains <see cref="UserIdentityDbContext"/>.</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // modelBuilder.ApplyConfiguration(new UserMapping());

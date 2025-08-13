@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -8,7 +8,16 @@ namespace UserIdentityService.Infrastructure.Migrations
     /// <inheritdoc />
     public partial class InitialMigration : Migration
     {
-        /// <inheritdoc />
+        /// <summary>
+        /// Builds the initial database schema for user identities.
+        /// </summary>
+        /// <remarks>
+        /// Creates the "users" table with columns for id, email, password, username, profile image URL,
+        /// email verification flag, active flag, creation/updated/last-login timestamps, and preferred language.
+        /// Adds a unique index on users.email. Creates the "external_logins" table with a composite primary key
+        /// (login_provider, provider_key) and a foreign key to users.id (cascade delete), plus an index on user_id.
+        /// This method defines the schema changes applied when the migration is run.
+        /// </remarks>
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(

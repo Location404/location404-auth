@@ -6,6 +6,17 @@ namespace UserIdentityService.Infrastructure.Context.EntitiesMapping;
 
 public class ExternalLoginMapping : IEntityTypeConfiguration<ExternalLogin>
 {
+    /// <summary>
+    /// Configures the EF Core mapping for the <c>ExternalLogin</c> entity.
+    /// </summary>
+    /// <remarks>
+    /// Maps the entity to the "external_logins" table, defines a composite primary key on
+    /// <c>LoginProvider</c> and <c>ProviderKey</c>, configures column names and constraints for
+    /// <c>LoginProvider</c> (required, max 50), <c>ProviderKey</c> (required, max 256) and
+    /// <c>UserId</c> (required), and creates an index on <c>UserId</c> named
+    /// "ix_external_logins_user_id".
+    /// </remarks>
+    /// <param name="builder">The EF Core entity type builder for configuring <c>ExternalLogin</c>.</param>
     public void Configure(EntityTypeBuilder<ExternalLogin> builder)
     {
         builder.ToTable("external_logins");
