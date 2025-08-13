@@ -4,7 +4,7 @@ using UserIdentityService.Application.Common.Result;
 
 namespace UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithExternalProviderCommand;
 
-public sealed class CreateUserWithExternalProviderCommand : ICommand<Result<CreateUserResult>>
+public sealed class CreateUserWithExternalProviderCommand : ICommand<Result<CreateUserWithExternalProviderResponse>>
 {
     [EmailAddress, Required]
     public required string Email { get; set; }
