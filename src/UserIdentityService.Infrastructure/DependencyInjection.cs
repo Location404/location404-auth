@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithPasswordCommand;
+using UserIdentityService.Infrastructure.Services;
 
 namespace UserIdentityService.Infrastructure;
 
@@ -20,7 +21,6 @@ public static class DependencyInjection
 
             options.EnableSensitiveDataLogging();
             options.EnableDetailedErrors();
-
         });
         
         services.AddLiteBus(liteBus =>
@@ -28,6 +28,8 @@ public static class DependencyInjection
             liteBus.AddCommandModule(module => module.RegisterFromAssembly(typeof(CreateUserWithPasswordHandler).Assembly));
             // liteBus.AddQueryModule(module => module.RegisterFromAssembly(typeof(CreateUserWithExternalProviderHandler).Assembly));
         });
+
+        services.AddExceptionHandler<CustomExceptionHandler>();
 
         return services;
     }
