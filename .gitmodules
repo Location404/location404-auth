@@ -1,4 +1,0 @@
-[submodule "libs"]
-	path = libs
-	url = https://github.com/Location404/observability-sdk
-	branch = main
