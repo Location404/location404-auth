@@ -1,4 +1,3 @@
-
 using LiteBus.Commands.Abstractions;
 using UserIdentityService.Application.Common.Result;
 
