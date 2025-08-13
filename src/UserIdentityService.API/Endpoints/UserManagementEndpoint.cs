@@ -1,8 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using LiteBus.Commands.Abstractions;
-using Microsoft.AspNetCore.Mvc;
-
-using UserIdentityService.API.Common;
+using UserIdentityService.API.Filters;
 using UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithPasswordCommand;
 
 namespace UserIdentityService.API.Endpoints;
@@ -13,15 +10,21 @@ public static class UserManagement
     {
         var group = app.MapGroup("/api/user");
 
-        group.MapPost("/create-with-password", async (CreateUserWithPasswordCommand command, [FromServices] ICommandMediator mediator) =>
-        {
-            if (!ValidateModel.Validate(command, out var errorResult))
-                return errorResult!;
-
-            var result = await mediator.SendAsync(command);
-            return result.IsSuccess
-                ? Results.Ok(result.Value)
-                : Results.BadRequest(result.Error);
-        });
+        group.MapPost("/create-with-password", HandleCreateUserWithPassword)
+            .WithDescription("Create a user with email and password")
+            .Produces<CreateUserWithPasswordCommandResponse>(StatusCodes.Status200OK)
+            .AddEndpointFilter<ValidationFilter<CreateUserWithPasswordCommand>>();
     }
+
+    #region [Endpoints Handlers]
+
+    private static async ValueTask<IResult> HandleCreateUserWithPassword(CreateUserWithPasswordCommand command, ICommandMediator mediator)
+    {
+        var result = await mediator.SendAsync(command);
+        return result.IsSuccess
+            ? Results.Ok(result.Value)
+            : Results.BadRequest(result.Error);
+    }
+
+    #endregion
 }

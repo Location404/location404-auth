@@ -1,4 +1,3 @@
-
 using Scalar.AspNetCore;
 using UserIdentityService.API.Endpoints;
 using UserIdentityService.Infrastructure;

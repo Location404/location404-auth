@@ -4,7 +4,7 @@ using UserIdentityService.Application.Common.Result;
 
 namespace UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithPasswordCommand;
 
-public sealed class CreateUserWithPasswordCommand : ICommand<Result<CreateUserResult>>
+public sealed class CreateUserWithPasswordCommand : ICommand<Result<CreateUserWithPasswordCommandResponse>>
 {
     [EmailAddress, Required]
     public required string Email { get; set; }
