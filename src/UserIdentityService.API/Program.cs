@@ -1,3 +1,6 @@
+
+using Scalar.AspNetCore;
+using UserIdentityService.API.Endpoints;
 using UserIdentityService.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,8 +11,12 @@ builder.Services.AddUserIdentityInfra(builder.Configuration);
 var app = builder.Build();
 
 app.MapOpenApi();
-app.UseHttpsRedirection();
+app.MapUserManagementEndpoints();
 
+app.UseHttpsRedirection();
+app.MapScalarApiReference();
+
+app.MapGet("/", () => Results.Redirect("/scalar")).ExcludeFromDescription();
 app.UseExceptionHandler("/error");
 
 app.Run();
