@@ -18,6 +18,7 @@ public static class UserManagement
 
     #region [Endpoints Handlers]
 
+    // Create User with Password
     private static async ValueTask<IResult> HandleCreateUserWithPassword(CreateUserWithPasswordCommand command, ICommandMediator mediator)
     {
         var result = await mediator.SendAsync(command);
