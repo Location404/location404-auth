@@ -56,7 +56,7 @@ services:
   grafana:
     image: grafana/grafana:latest
     ports:
-      - "3000:3000"
+      - "3300:3300"
     volumes:
       - ./grafana-provisioning/:/etc/grafana/provisioning/
     depends_on:
