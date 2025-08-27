@@ -6,7 +6,6 @@
     <UserSecretsId>7cd3e6fa-8a56-47cb-bd82-03c8637faacf</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Location404.Shared.Observability" Version="1.0.0-preview.20250823175216" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.6.9" />
   </ItemGroup>
