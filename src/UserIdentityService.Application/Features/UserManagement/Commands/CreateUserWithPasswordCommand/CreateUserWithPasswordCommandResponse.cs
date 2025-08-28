@@ -1,7 +1,7 @@
 namespace UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithPasswordCommand;
 
 public record CreateUserWithPasswordCommandResponse(
-    string Id,
+    Guid Id,
     string Username,
     string Email
 );

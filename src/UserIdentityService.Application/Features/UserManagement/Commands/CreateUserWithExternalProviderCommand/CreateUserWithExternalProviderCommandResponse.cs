@@ -1,7 +1,7 @@
 namespace UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithExternalProviderCommand;
 
 public record CreateUserWithExternalProviderCommandResponse(
-    string Id,
+    Guid Id,
     string Username,
     string Email
 );
