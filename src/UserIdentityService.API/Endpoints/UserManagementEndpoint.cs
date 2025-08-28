@@ -1,4 +1,7 @@
 using LiteBus.Commands.Abstractions;
+
+using Microsoft.AspNetCore.Mvc;
+
 using UserIdentityService.API.Filters;
 using UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithExternalProviderCommand;
 using UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithPasswordCommand;
@@ -25,8 +28,13 @@ public static class UserManagement
     #region [Endpoints Handlers]
 
     // Create User with Password
-    private static async ValueTask<IResult> HandleCreateUserWithPassword(CreateUserWithPasswordCommand command, ICommandMediator mediator)
+    private static async ValueTask<IResult> HandleCreateUserWithPassword(
+        [FromBody] CreateUserWithPasswordCommand command,
+        [FromServices] ICommandMediator mediator,
+        [FromServices] ILogger<CreateUserWithPasswordCommand> logger)
     {
+        logger.LogInformation("Creating user with email: {Email} and username: {Username}", command.Email, command.Username);
+
         var result = await mediator.SendAsync(command);
         return result.IsSuccess
             ? Results.Ok(result.Value)
@@ -34,8 +42,13 @@ public static class UserManagement
     }
 
     // Create User with External Provider
-    private static async ValueTask<IResult> HandleCreateUserWithExternalProvider(CreateUserWithExternalProviderCommand command, ICommandMediator mediator)
+    private static async ValueTask<IResult> HandleCreateUserWithExternalProvider(
+        [FromBody] CreateUserWithExternalProviderCommand command,
+        [FromServices] ICommandMediator mediator,
+        [FromServices] ILogger<CreateUserWithExternalProviderCommand> logger)
     {
+        logger.LogInformation("Creating user with external provider: {Provider}", command.Provider);
+
         var result = await mediator.SendAsync(command);
         return result.IsSuccess
             ? Results.Ok(result.Value)
