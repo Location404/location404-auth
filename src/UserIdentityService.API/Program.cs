@@ -8,7 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 builder.Services.AddUserIdentityInfra(builder.Configuration);
-builder.Services.AddOpenTelemetryObservability(builder.Configuration);
+builder.Services.AddOpenTelemetryObservability(builder.Configuration, options =>
+{
+    options.Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
+});
 
 var app = builder.Build();
 
