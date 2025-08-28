@@ -1,5 +1,4 @@
 using LiteBus.Commands.Abstractions;
-
 using Microsoft.AspNetCore.Mvc;
 
 using UserIdentityService.API.Filters;
