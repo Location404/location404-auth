@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using UserIdentityService.Application.Common.Interfaces;
 using UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithPasswordCommand;
 using UserIdentityService.Infrastructure.Services;
 
@@ -16,7 +17,11 @@ public static class DependencyInjection
     {
         services.AddDbContext<Context.UserIdentityDbContext>(options =>
         {
-            var connectionString = configuration.GetConnectionString("UserIdentityDatabase");
+            #if DEBUG
+            var connectionString = configuration.GetConnectionString("UserIdentityDatabaseDevelopment");
+            #else
+            var connectionString = configuration.GetConnectionString("UserIdentityDatabaseProduction");
+            #endif
             options.UseNpgsql(connectionString);
 
             options.EnableSensitiveDataLogging();
@@ -25,10 +30,13 @@ public static class DependencyInjection
         
         services.AddLiteBus(liteBus =>
         {
-            liteBus.AddCommandModule(module => module.RegisterFromAssembly(typeof(CreateUserWithPasswordHandler).Assembly));
+            liteBus.AddCommandModule(module => module.RegisterFromAssembly(typeof(CreateUserWithPasswordCommandHandler).Assembly));
             // liteBus.AddQueryModule(module => module.RegisterFromAssembly(typeof(CreateUserWithExternalProviderHandler).Assembly));
         });
 
+        services.AddScoped<IEncryptPasswordService, BcryptEncryptPasswordService>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUserRepository, UserRepository>();
         services.AddExceptionHandler<CustomExceptionHandler>();
 
         return services;
