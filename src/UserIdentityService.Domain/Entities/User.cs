@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+
 using UserIdentityService.Domain.ValueObjects;
 
 namespace UserIdentityService.Domain.Entities;
@@ -21,7 +23,8 @@ public class User
 
     public string PreferredLanguage { get; private set; }
 
-    public ICollection<ExternalLogin> ExternalLogins { get; private set; }
+    public virtual ICollection<ExternalLogin> ExternalLogins { get; private set; } = [];
+    public virtual ICollection<RefreshToken> RefreshTokens { get; private set; } = [];
 
     private User(EmailAddress email, string username, string? password = null)
     {
@@ -37,7 +40,6 @@ public class User
         UpdatedAt = DateTime.UtcNow;
         PreferredLanguage = "pt-BR";
         // Level = Level.Initial;
-        ExternalLogins = [];
     }
 
     public static User Create(EmailAddress email, string username, string password)
