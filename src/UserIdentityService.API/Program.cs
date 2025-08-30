@@ -17,11 +17,15 @@ var app = builder.Build();
 
 app.MapOpenApi();
 app.MapUserManagementEndpoints();
+app.MapAuthenticationEndpoints();
 
 app.UseHttpsRedirection();
 app.MapScalarApiReference();
 
 app.MapGet("/", () => Results.Redirect("/scalar")).ExcludeFromDescription();
 app.UseExceptionHandler("/error");
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();
