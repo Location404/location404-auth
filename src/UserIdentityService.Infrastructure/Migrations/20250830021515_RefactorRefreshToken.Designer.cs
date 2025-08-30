@@ -12,8 +12,8 @@ using UserIdentityService.Infrastructure.Context;
 namespace UserIdentityService.Infrastructure.Migrations
 {
     [DbContext(typeof(UserIdentityDbContext))]
-    [Migration("20250809211751_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250830021515_RefactorRefreshToken")]
+    partial class RefactorRefreshToken
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,33 @@ namespace UserIdentityService.Infrastructure.Migrations
                         .HasDatabaseName("ix_external_logins_user_id");
 
                     b.ToTable("external_logins", (string)null);
+                });
+
+            modelBuilder.Entity("UserIdentityService.Domain.Entities.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ExpiresAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("RevokedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("refresh_tokens", (string)null);
                 });
 
             modelBuilder.Entity("UserIdentityService.Domain.Entities.User", b =>
@@ -89,10 +116,10 @@ namespace UserIdentityService.Infrastructure.Migrations
                         .HasColumnType("character varying(10)")
                         .HasColumnName("preferred_language");
 
-                    b.Property<string>("ProfileImageUrl")
+                    b.Property<byte[]>("ProfileImage")
                         .HasMaxLength(512)
-                        .HasColumnType("character varying(512)")
-                        .HasColumnName("profile_image_url");
+                        .HasColumnType("bytea")
+                        .HasColumnName("profile_image");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -125,9 +152,22 @@ namespace UserIdentityService.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("UserIdentityService.Domain.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("UserIdentityService.Domain.Entities.User", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("UserIdentityService.Domain.Entities.User", b =>
                 {
                     b.Navigation("ExternalLogins");
+
+                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }
