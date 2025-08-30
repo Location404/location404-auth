@@ -2,7 +2,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -87,7 +86,7 @@ public sealed class TokenService : ITokenService
 
         existing.Revoke();
         var newRefresh = IssueRefreshTokenAsync(existing.UserId, cancellationToken);
-        var access = GenerateAccessToken(existing.UserId, userName: existing.UserId.ToString(), roles: []);
+        var access = GenerateAccessToken(existing.UserId, userName: existing.UserId.ToString(), roles: ["User"]);
 
         return Result.Success((access.Value, newRefresh.Value));
     }

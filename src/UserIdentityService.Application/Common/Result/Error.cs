@@ -33,7 +33,7 @@ public enum ErrorType
     UnAuthenticated,
 
     /// <summary>
-    /// Ocorreu um erro ao acessar o banco de dados.
+    /// Ocorreu erro durante uma operação no banco de dados.
     /// </summary>
     Database
 }

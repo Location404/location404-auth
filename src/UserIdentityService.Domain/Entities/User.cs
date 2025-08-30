@@ -1,5 +1,3 @@
-using Microsoft.VisualBasic;
-
 using UserIdentityService.Domain.ValueObjects;
 
 namespace UserIdentityService.Domain.Entities;
