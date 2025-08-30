@@ -68,6 +68,11 @@ public class UserMapping : IEntityTypeConfiguration<User>
             .OnDelete(DeleteBehavior.Cascade)
             .HasConstraintName("fk_users_external_logins");
 
+        builder.HasMany(u => u.RefreshTokens)
+            .WithOne(rt => rt.User)
+            .HasForeignKey(rt => rt.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.HasIndex(u => u.Email)
             .IsUnique()
             .HasDatabaseName("idx_users_email");
