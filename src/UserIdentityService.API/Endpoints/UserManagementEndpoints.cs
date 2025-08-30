@@ -36,7 +36,7 @@ public static class UserManagementEndpoints
     /// <summary>
     /// Creates a new user with email and password authentication
     /// </summary>
-    private static async ValueTask<IResult> HandleCreateUserWithPassword(
+    private static async Task<IResult> HandleCreateUserWithPassword(
         [FromBody] CreateUserWithPasswordCommand command,
         [FromServices] ICommandMediator mediator,
         [FromServices] ILogger<CreateUserWithPasswordCommand> logger,
@@ -59,7 +59,7 @@ public static class UserManagementEndpoints
     /// <summary>
     /// Creates a new user with external authentication provider
     /// </summary>
-    private static async ValueTask<IResult> HandleCreateUserWithExternalProvider(
+    private static async Task<IResult> HandleCreateUserWithExternalProvider(
         [FromBody] CreateUserWithExternalProviderCommand command,
         [FromServices] ICommandMediator mediator,
         [FromServices] ILogger<CreateUserWithExternalProviderCommand> logger,
