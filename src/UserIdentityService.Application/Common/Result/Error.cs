@@ -30,7 +30,12 @@ public enum ErrorType
     /// <summary>
     /// O requisitante não está autenticado.
     /// </summary>
-    UnAuthenticated
+    UnAuthenticated,
+
+    /// <summary>
+    /// Ocorreu um erro ao acessar o banco de dados.
+    /// </summary>
+    Database
 }
 public record Error(string Code, string Message, ErrorType Type = ErrorType.Failure)
 {
