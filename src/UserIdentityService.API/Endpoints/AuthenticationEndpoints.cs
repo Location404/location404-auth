@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using UserIdentityService.API.Filters;
 using UserIdentityService.Application.Features.Authentication.Commands.AuthenticateUserWithPasswordCommand;
+using UserIdentityService.Application.Features.Authentication.Commands.RefreshTokenCommand;
 
 namespace UserIdentityService.API.Endpoints;
 
@@ -27,17 +28,17 @@ public static class AuthenticationEndpoints
         //     .WithDescription("Authenticate a user with an external authentication provider")
         //     .WithTags("Authentication")
         //     .Produces<LoginWithExternalProviderCommandResponse>(StatusCodes.Status200OK)
-        //     .ProducesValidationProblem(StatusCodes.Status400BadRequest)
-        //     .AddEndpointFilter<ValidationFilter<LoginWithExternalProviderCommand>>();
+            // .ProducesValidationProblem(StatusCodes.Status400BadRequest)
+            // .AddEndpointFilter<ValidationFilter<LoginWithExternalProviderCommand>>();
 
-        // // POST /api/auth/refresh - Refresh JWT using refresh token
-        // group.MapPost("/refresh", HandleRefreshToken)
-        //     .WithName("RefreshToken")
-        //     .WithDescription("Refresh JWT using a valid refresh token")
-        //     .WithTags("Authentication")
-        //     .Produces<RefreshTokenCommandResponse>(StatusCodes.Status200OK)
-        //     .ProducesValidationProblem(StatusCodes.Status400BadRequest)
-        //     .AddEndpointFilter<ValidationFilter<RefreshTokenCommand>>();
+        // POST /api/auth/refresh - Refresh JWT using refresh token
+        group.MapPost("/refresh", HandleRefreshToken)
+            .WithName("RefreshToken")
+            .WithDescription("Refresh JWT using a valid refresh token")
+            .WithTags("Authentication")
+            .Produces<RefreshTokenCommandResponse>(StatusCodes.Status200OK)
+            .ProducesValidationProblem(StatusCodes.Status400BadRequest)
+            .AddEndpointFilter<ValidationFilter<RefreshTokenCommand>>();
     }
 
     #region [Endpoints Handlers]
@@ -50,16 +51,23 @@ public static class AuthenticationEndpoints
         [FromServices] ICommandMediator mediator,
         [FromServices] ILogger<AuthenticateUserWithPasswordCommand> logger)
     {
-        logger.LogInformation("Logging in user with email: {Email}", command.Email);
-
         var result = await mediator.SendAsync(command);
 
-        if (result.IsSuccess)
-        {
-            return Results.Ok(result.Value);
-        }
+        return result.IsSuccess
+            ? Results.Ok(result.Value)
+            : Results.BadRequest(result.Error);
+    }
 
-        return Results.BadRequest(result.Error);
+    private static async Task<IResult> HandleRefreshToken(
+        [FromBody] RefreshTokenCommand command,
+        [FromServices] ICommandMediator mediator,
+        [FromServices] ILogger<RefreshTokenCommand> logger)
+    {
+        var result = await mediator.SendAsync(command);
+
+        return result.IsSuccess
+            ? Results.Ok(result.Value)
+            : Results.BadRequest(result.Error);
     }
 
     #endregion

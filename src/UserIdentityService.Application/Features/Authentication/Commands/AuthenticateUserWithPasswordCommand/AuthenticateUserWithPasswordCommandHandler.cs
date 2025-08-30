@@ -27,7 +27,7 @@ public class AuthenticateUserWithPasswordCommandHandler(
         {
             _logger.LogWarning("User with email {Email} not found.", message.Email);
             return Result<AuthenticateUserWithPasswordCommandResponse>.Failure(new Error(
-                "UserNotFound",
+                "UserEmailNotFound",
                 "User with the provided email does not exist.",
                 ErrorType.NotFound));
         }
