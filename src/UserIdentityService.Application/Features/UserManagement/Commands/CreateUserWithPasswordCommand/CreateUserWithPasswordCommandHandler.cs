@@ -1,4 +1,5 @@
 using LiteBus.Commands.Abstractions;
+
 using Microsoft.Extensions.Logging;
 
 using UserIdentityService.Application.Common.Interfaces;
@@ -11,7 +12,7 @@ namespace UserIdentityService.Application.Features.UserManagement.Commands.Creat
 public class CreateUserWithPasswordCommandHandler(
     IUnitOfWork uow,
     IEncryptPasswordService encryptPassword,
-    ILogger<CreateUserWithPasswordCommandHandler> logger) 
+    ILogger<CreateUserWithPasswordCommandHandler> logger)
     : ICommandHandler<CreateUserWithPasswordCommand, Result<CreateUserWithPasswordCommandResponse>>
 {
     private readonly IUnitOfWork _unitOfWork = uow;
