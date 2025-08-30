@@ -12,8 +12,8 @@ using UserIdentityService.Infrastructure.Context;
 namespace UserIdentityService.Infrastructure.Migrations
 {
     [DbContext(typeof(UserIdentityDbContext))]
-    [Migration("20250809214829_ImageUrlBTEA")]
-    partial class ImageUrlBTEA
+    [Migration("20250830021711_CreateIndexInRefreshTokenTable")]
+    partial class CreateIndexInRefreshTokenTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,37 @@ namespace UserIdentityService.Infrastructure.Migrations
                         .HasDatabaseName("ix_external_logins_user_id");
 
                     b.ToTable("external_logins", (string)null);
+                });
+
+            modelBuilder.Entity("UserIdentityService.Domain.Entities.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ExpiresAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("RevokedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Token")
+                        .IsUnique()
+                        .HasDatabaseName("idx_refresh_tokens_token");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("refresh_tokens", (string)null);
                 });
 
             modelBuilder.Entity("UserIdentityService.Domain.Entities.User", b =>
@@ -125,9 +156,22 @@ namespace UserIdentityService.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("UserIdentityService.Domain.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("UserIdentityService.Domain.Entities.User", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("UserIdentityService.Domain.Entities.User", b =>
                 {
                     b.Navigation("ExternalLogins");
+
+                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }
