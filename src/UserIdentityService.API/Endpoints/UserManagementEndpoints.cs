@@ -6,7 +6,7 @@ using UserIdentityService.Application.Features.UserManagement.Commands.CreateUse
 
 namespace UserIdentityService.API.Endpoints;
 
-public static class UserManagement
+public static class UserManagementEndpoints
 {
     public static void MapUserManagementEndpoints(this IEndpointRouteBuilder app)
     {

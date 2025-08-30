@@ -21,20 +21,26 @@ public class CreateUserWithPasswordCommandHandler(
     public async Task<Result<CreateUserWithPasswordCommandResponse>> HandleAsync(CreateUserWithPasswordCommand message,
         CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Creating user with email {Email} and username {Username}.", message.Email, message.Username);
+        _logger.LogInformation($"Creating user with email {message.Email} and username {message.Username}.");
 
         var existingUserByEmail = await _unitOfWork.Users.ExistsByEmailAsync(message.Email, cancellationToken);
         if (existingUserByEmail == true)
         {
-            _logger.LogDebug("User with email {Email} already exists.", message.Email);
-            return Result<CreateUserWithPasswordCommandResponse>.Failure(new Error("EmailAlreadyInUse", "A user with this email already exists."));
+            _logger.LogDebug($"User with email {message.Email} already exists.");
+            return Result<CreateUserWithPasswordCommandResponse>.Failure(new Error(
+                "EmailAlreadyInUse",
+                "A user with this email already exists.",
+                ErrorType.Validation));
         }
 
         var existingUserByUsername = await _unitOfWork.Users.ExistsByUsernameAsync(message.Username, cancellationToken);
         if (existingUserByUsername == true)
         {
-            _logger.LogDebug("User with username {Username} already exists.", message.Username);
-            return Result<CreateUserWithPasswordCommandResponse>.Failure(new Error("UsernameAlreadyInUse", "A user with this username already exists."));
+            _logger.LogDebug($"User with username {message.Username} already exists.");
+            return Result<CreateUserWithPasswordCommandResponse>.Failure(new Error(
+                "UsernameAlreadyInUse",
+                "A user with this username already exists.",
+                ErrorType.Validation));
         }
 
         var newUser = User.Create(
@@ -48,13 +54,17 @@ public class CreateUserWithPasswordCommandHandler(
         try
         {
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            _logger.LogInformation("User with email {Email} and username {Username} created successfully.", message.Email, message.Username);
+            _logger.LogInformation($"User with email {message.Email} and username {message.Username} created successfully.");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while creating user with email {Email} and username {Username}.", message.Email, message.Username);
+            _logger.LogError(ex, $"An error occurred while creating user with email {message.Email} and username {message.Username}.");
+
             await _unitOfWork.RollbackAsync(cancellationToken);
-            return Result<CreateUserWithPasswordCommandResponse>.Failure(new Error("DatabaseError", $"An error occurred while saving the user: {ex.Message}"));
+            return Result<CreateUserWithPasswordCommandResponse>.Failure(new Error(
+                "DatabaseError",
+                $"An error occurred while saving the user: {ex.Message}",
+                ErrorType.Database));
         }
 
         var response = new CreateUserWithPasswordCommandResponse(newUser.Id, newUser.Username, newUser.Email);
