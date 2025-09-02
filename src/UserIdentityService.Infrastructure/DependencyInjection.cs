@@ -38,12 +38,12 @@ public static class DependencyInjection
 
     private static void AddDatabase(IServiceCollection services, IConfiguration configuration)
     {
+        var connectionString = IsDevelopment
+            ? configuration.GetConnectionString("UserIdentityDatabaseDevelopment")
+            : configuration.GetConnectionString("UserIdentityDatabaseProduction");
+
         services.AddDbContext<Context.UserIdentityDbContext>(options =>
         {
-            var connectionString = IsDevelopment
-                ? configuration.GetConnectionString("UserIdentityDatabaseDevelopment")
-                : configuration.GetConnectionString("UserIdentityDatabaseProduction");
-
             options.UseNpgsql(connectionString);
             options.EnableSensitiveDataLogging();
             options.EnableDetailedErrors();
@@ -117,7 +117,7 @@ public static class DependencyInjection
             OnTokenValidated = context =>
             {
                 var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger>();
-                logger.LogInformation("Token validated for user: {UserId}", 
+                logger.LogInformation("Token validated for user: {UserId}",
                     context.Principal?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value);
                 return Task.CompletedTask;
             },
