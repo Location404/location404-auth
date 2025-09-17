@@ -124,9 +124,6 @@ public static class DependencyInjection
 
             OnAuthenticationFailed = context =>
             {
-                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger>();
-                logger.LogWarning("Authentication failed: {Error}", context.Exception.Message);
-
                 if (isDevelopment)
                 {
                     var keyValuePair = new KeyValuePair<string, StringValues>("Token-Error", context.Exception.Message);
