@@ -13,6 +13,8 @@ builder.Services.AddOpenTelemetryObservability(builder.Configuration, options =>
     options.Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
 });
 
+builder.Services.AddCors();
+
 var app = builder.Build();
 
 app.MapOpenApi();
@@ -27,5 +29,7 @@ app.UseExceptionHandler("/error");
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.Run();
