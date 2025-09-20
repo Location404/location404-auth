@@ -1,7 +1,9 @@
 using LiteBus.Commands.Abstractions;
+
 using Microsoft.AspNetCore.Mvc;
 
 using UserIdentityService.API.Filters;
+using UserIdentityService.Application.Common.Result;
 using UserIdentityService.Application.Features.Authentication.Commands.AuthenticateUserWithPasswordCommand;
 using UserIdentityService.Application.Features.Authentication.Commands.RefreshTokenCommand;
 
@@ -28,8 +30,8 @@ public static class AuthenticationEndpoints
         //     .WithDescription("Authenticate a user with an external authentication provider")
         //     .WithTags("Authentication")
         //     .Produces<LoginWithExternalProviderCommandResponse>(StatusCodes.Status200OK)
-            // .ProducesValidationProblem(StatusCodes.Status400BadRequest)
-            // .AddEndpointFilter<ValidationFilter<LoginWithExternalProviderCommand>>();
+        // .ProducesValidationProblem(StatusCodes.Status400BadRequest)
+        // .AddEndpointFilter<ValidationFilter<LoginWithExternalProviderCommand>>();
 
         // POST /api/auth/refresh - Refresh JWT using refresh token
         group.MapPost("/refresh", HandleRefreshToken)
@@ -49,25 +51,56 @@ public static class AuthenticationEndpoints
     private static async Task<IResult> HandleLoginWithPassword(
         [FromBody] AuthenticateUserWithPasswordCommand command,
         [FromServices] ICommandMediator mediator,
+        HttpContext httpContext,
         [FromServices] ILogger<AuthenticateUserWithPasswordCommand> logger)
     {
         var result = await mediator.SendAsync(command);
 
-        return result.IsSuccess
-            ? Results.Ok(result.Value)
-            : Results.BadRequest(result.Error);
+        if (result.IsFailure)
+        {
+            logger.LogWarning("Authentication failed: {Error}", result.Error);
+            return Results.BadRequest(result.Error);
+        }
+
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict
+        };
+
+        httpContext.Response.Cookies.Append("refreshToken", result.Value.RefreshToken, cookieOptions);
+        httpContext.Response.Cookies.Append("refreshTokenExpiresAt", result.Value.RefreshTokenExpiresAt.ToString(), cookieOptions);
+
+        return Results.Ok(result.Value);
     }
 
     private static async Task<IResult> HandleRefreshToken(
         [FromBody] RefreshTokenCommand command,
+        [FromServices] HttpContext httpContext,
         [FromServices] ICommandMediator mediator,
         [FromServices] ILogger<RefreshTokenCommand> logger)
     {
         var result = await mediator.SendAsync(command);
 
-        return result.IsSuccess
-            ? Results.Ok(result.Value)
-            : Results.BadRequest(result.Error);
+        if (result.IsFailure)
+        {
+            logger.LogWarning("Token refresh failed: {Error}", result.Error);
+            return Results.BadRequest(result.Error);
+        }
+
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict
+        };
+
+        httpContext.Response.Cookies.Append("refreshToken", result.Value.RefreshToken, cookieOptions);
+        httpContext.Response.Cookies.Append("refreshTokenExpiresAt", result.Value.RefreshTokenExpiresAt.ToString(), cookieOptions);
+
+        return Results.Ok(result.Value);
+
     }
 
     #endregion
