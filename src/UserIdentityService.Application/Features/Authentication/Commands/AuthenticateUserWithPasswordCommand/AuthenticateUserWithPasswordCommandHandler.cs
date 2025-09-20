@@ -74,6 +74,7 @@ public class AuthenticateUserWithPasswordCommandHandler(
         }
 
         return Result<AuthenticateUserWithPasswordCommandResponse>.Success(new(
+            UserId: user.Id,
             AccessToken: token.Value,
             RefreshToken: refreshTokenResult.Value.Token,
             RefreshTokenExpiresAt: refreshTokenResult.Value.ExpiresAtUtc
