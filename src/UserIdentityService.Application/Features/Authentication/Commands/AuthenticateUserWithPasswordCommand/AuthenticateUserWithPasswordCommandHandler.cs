@@ -30,7 +30,7 @@ public class AuthenticateUserWithPasswordCommandHandler(
                 "UserEmailNotFound",
                 "User with the provided email does not exist.",
                 ErrorType.NotFound));
-        }
+        }   
 
         if (user.Password is null)
         {

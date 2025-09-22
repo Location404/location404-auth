@@ -69,6 +69,7 @@ public static class AuthenticationEndpoints
             SameSite = SameSiteMode.Strict
         };
 
+        httpContext.Response.Cookies.Append("accessToken", result.Value.AccessToken, cookieOptions);
         httpContext.Response.Cookies.Append("refreshToken", result.Value.RefreshToken, cookieOptions);
         httpContext.Response.Cookies.Append("refreshTokenExpiresAt", result.Value.RefreshTokenExpiresAt.ToString(), cookieOptions);
 
