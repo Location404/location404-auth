@@ -50,7 +50,7 @@ public static class UserManagementEndpoints
             .WithName("UpdateUser")
             .WithDescription("Update an existing user's information")
             .WithTags("Users")
-            .Produces<UpdateUserInformationsCommandResponse>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status204NoContent)
             .ProducesValidationProblem(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .RequireAuthorization();
@@ -131,7 +131,7 @@ public static class UserManagementEndpoints
         var result = await mediator.SendAsync(command);
 
         return result.IsSuccess
-            ? Results.Ok(result.Value)
+            ? Results.NoContent()
             : Results.BadRequest(result.Error);
     }
 
