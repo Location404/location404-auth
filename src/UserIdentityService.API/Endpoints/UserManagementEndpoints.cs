@@ -1,14 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-
 using LiteBus.Commands.Abstractions;
 using LiteBus.Queries.Abstractions;
 
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Mvc;
 
 using UserIdentityService.API.Filters;
-using UserIdentityService.Application.Common.Result;
 using UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithExternalProviderCommand;
 using UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithPasswordCommand;
 using UserIdentityService.Application.Features.UserManagement.Queries.GetCurrentUserInformation;
