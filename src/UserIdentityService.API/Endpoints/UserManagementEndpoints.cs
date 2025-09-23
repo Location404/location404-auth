@@ -1,3 +1,6 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+
 using LiteBus.Commands.Abstractions;
 using LiteBus.Queries.Abstractions;
 
@@ -96,9 +99,16 @@ public static class UserManagementEndpoints
     private static async Task<IResult> HandleGetCurrentUser(
         [FromRoute] Guid userId,
         [FromServices] IQueryMediator query,
-        [FromServices] ILogger logger)
+        [FromServices] ILogger logger,
+        HttpContext context)
     {
-        var result = await query.QueryAsync(new GetCurrentUserInformationQuery(userId));
+        if (!Guid.TryParse(context.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value, out var subClaim))
+        {
+            logger.LogWarning("Invalid or missing 'sub' claim in JWT token.");
+            return Results.Unauthorized();
+        }
+
+        var result = await query.QueryAsync(new GetCurrentUserInformationQuery(subClaim));
 
         return result.IsSuccess
             ? Results.Ok(result.Value)
