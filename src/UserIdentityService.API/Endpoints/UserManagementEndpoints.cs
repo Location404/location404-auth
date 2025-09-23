@@ -1,8 +1,14 @@
 using LiteBus.Commands.Abstractions;
+using LiteBus.Queries.Abstractions;
+
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Mvc;
+
 using UserIdentityService.API.Filters;
+using UserIdentityService.Application.Common.Result;
 using UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithExternalProviderCommand;
 using UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithPasswordCommand;
+using UserIdentityService.Application.Features.UserManagement.Queries.GetCurrentUserInformation;
 
 namespace UserIdentityService.API.Endpoints;
 
@@ -29,6 +35,15 @@ public static class UserManagementEndpoints
             .Produces<CreateUserWithExternalProviderCommandResponse>(StatusCodes.Status201Created)
             .ProducesValidationProblem(StatusCodes.Status400BadRequest)
             .AddEndpointFilter<ValidationFilter<CreateUserWithExternalProviderCommand>>();
+
+        // GET /api/me - Get current user info (handled in AuthenticationEndpoints)
+        group.MapGet("/me", HandleGetCurrentUser)
+            .WithName("GetCurrentUser")
+            .WithDescription("Get information about the currently authenticated user")
+            .WithTags("Users")
+            .Produces<GetCurrentUserInformationQueryResponse>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .RequireAuthorization();
     }
 
     #region [Endpoints Handlers]
@@ -42,7 +57,7 @@ public static class UserManagementEndpoints
         [FromServices] ILogger<CreateUserWithPasswordCommand> logger,
         HttpContext context)
     {
-        logger.LogInformation("Creating user with email: {Email} and username: {Username}", 
+        logger.LogInformation("Creating user with email: {Email} and username: {Username}",
             command.Email, command.Username);
 
         var result = await mediator.SendAsync(command);
@@ -76,6 +91,18 @@ public static class UserManagementEndpoints
         }
 
         return Results.BadRequest(result.Error);
+    }
+
+    private static async Task<IResult> HandleGetCurrentUser(
+        [FromRoute] Guid userId,
+        [FromServices] IQueryMediator query,
+        [FromServices] ILogger logger)
+    {
+        var result = await query.QueryAsync(new GetCurrentUserInformationQuery(userId));
+
+        return result.IsSuccess
+            ? Results.Ok(result.Value)
+            : Results.NotFound(result.Error);
     }
 
     #endregion
