@@ -60,13 +60,16 @@ public class User
         return user;
     }
 
-    public void UpdateProfile(string? username, byte[]? profileImage = null)
+    public void UpdateProfile(string? username, EmailAddress? email = null, byte[]? profileImage = null)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(username, nameof(username));
-
-        ProfileImage = profileImage;
-        Username = username;
-        UpdatedAt = DateTime.UtcNow;
+        if (username != null || email != null || profileImage != null)
+        {
+            Username = username ?? Username;
+            Email = email ?? Email;
+            ProfileImage = profileImage ?? ProfileImage;
+            
+            UpdatedAt = DateTime.UtcNow;
+        }
     }
 
     public void VerifyEmail()

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using UserIdentityService.API.Filters;
 using UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithExternalProviderCommand;
 using UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithPasswordCommand;
+using UserIdentityService.Application.Features.UserManagement.Commands.UpdateUserInformationsCommand;
 using UserIdentityService.Application.Features.UserManagement.Queries.GetCurrentUserInformation;
 
 namespace UserIdentityService.API.Endpoints;
@@ -35,12 +36,22 @@ public static class UserManagementEndpoints
             .ProducesValidationProblem(StatusCodes.Status400BadRequest)
             .AddEndpointFilter<ValidationFilter<CreateUserWithExternalProviderCommand>>();
 
-        // GET /api/me - Get current user info (handled in AuthenticationEndpoints)
+        // GET /api/me - Get current user information
         group.MapGet("/me", HandleGetCurrentUser)
             .WithName("GetCurrentUser")
             .WithDescription("Get information about the currently authenticated user")
             .WithTags("Users")
             .Produces<GetCurrentUserInformationQueryResponse>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .RequireAuthorization();
+
+        // PATCH /api/users/{id} - Update user
+        group.MapPatch("/{id}", HandleUpdateUser)
+            .WithName("UpdateUser")
+            .WithDescription("Update an existing user's information")
+            .WithTags("Users")
+            .Produces<UpdateUserInformationsCommandResponse>(StatusCodes.Status200OK)
+            .ProducesValidationProblem(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .RequireAuthorization();
     }
@@ -93,7 +104,6 @@ public static class UserManagementEndpoints
     }
 
     private static async Task<IResult> HandleGetCurrentUser(
-        [FromRoute] Guid userId,
         [FromServices] IQueryMediator query,
         [FromServices] ILogger logger,
         HttpContext context)
@@ -109,6 +119,20 @@ public static class UserManagementEndpoints
         return result.IsSuccess
             ? Results.Ok(result.Value)
             : Results.NotFound(result.Error);
+    }
+
+    private static async Task<IResult> HandleUpdateUser(
+        [FromBody] UpdateUserInformationsCommand command,
+        [FromServices] ICommandMediator mediator,
+        [FromServices] ILogger<UpdateUserInformationsCommand> logger)
+    {
+        logger.LogInformation("Updating user information for user: {UserId}", command.Id);
+
+        var result = await mediator.SendAsync(command);
+
+        return result.IsSuccess
+            ? Results.Ok(result.Value)
+            : Results.BadRequest(result.Error);
     }
 
     #endregion
