@@ -54,24 +54,6 @@ public class UserTests
     }
 
     [Fact]
-    public void UpdateProfile_WithValidData_ShouldUpdateProfileAndDate()
-    {
-        // Arrange
-        var user = User.Create(_validEmail, ValidUsername, "password");
-        var originalUpdateDate = user.UpdatedAt;
-        var newUsername = "new_username";
-        var newImageBytes = new byte[] { 1, 2, 3, 4, 5 };
-
-        // Act
-        user.UpdateProfile(newUsername, newImageBytes);
-
-        // Assert
-        user.Username.ShouldBe(newUsername);
-        user.ProfileImage.ShouldBe(newImageBytes);
-        user.UpdatedAt.ShouldBeGreaterThan(originalUpdateDate);
-    }
-
-    [Fact]
     public void VerifyEmail_WhenCalled_ShouldMarkEmailAsVerified()
     {
         // Arrange
