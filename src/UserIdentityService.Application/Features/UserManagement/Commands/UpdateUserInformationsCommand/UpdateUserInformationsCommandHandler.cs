@@ -1,6 +1,7 @@
 using LiteBus.Commands.Abstractions;
 using LiteBus.Messaging.Abstractions;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 using UserIdentityService.Application.Common.Interfaces;
@@ -33,7 +34,7 @@ public class UpdateUserInformationsCommandHandler(
                 ErrorType.Validation));
         }
 
-        if (user.Email != message.Email)
+        if (user.Email != message.Email && message.Email != null)
         {
             var existingUserByEmail = await _unitOfWork.Users.ExistsByEmailAsync(message.Email, cancellationToken);
             if (existingUserByEmail == true)
@@ -46,7 +47,7 @@ public class UpdateUserInformationsCommandHandler(
             }
         }
 
-        if (!_encryptPassword.Verify(message.Password, user.Password!))
+        if (message.Password != null && !_encryptPassword.Verify(message.Password, user.Password!))
         {
             _logger.LogDebug("The new password cannot be the same as the old one.");
             return Result<UpdateUserInformationsCommandResponse>.Failure(new Error(
@@ -55,7 +56,7 @@ public class UpdateUserInformationsCommandHandler(
                 ErrorType.Validation));
         }
 
-        if (user.Username != message.Username)
+        if (user.Username != message.Username && message.Username != null)
         {
             var existingUserByUsername = await _unitOfWork.Users.ExistsByUsernameAsync(message.Username, cancellationToken);
             if (existingUserByUsername == true)
@@ -68,13 +69,23 @@ public class UpdateUserInformationsCommandHandler(
             }
         }
 
-        user.UpdateProfile(message.Username, EmailAddress.Create(message.Email), message.ProfileImage);
+        user.UpdateProfile(
+            message.Username ?? null,
+            message.Email != null ? EmailAddress.Create(message.Email) : null,
+            message.Password != null ? _encryptPassword.Encrypt(message.Password) : null);
+
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result<UpdateUserInformationsCommandResponse>.Success(new UpdateUserInformationsCommandResponse(
             user.Id,
             user.Email,
-            user.Username,
-            user.ProfileImage));
+            user.Username));
+    }
+
+    public async Task<byte[]> GetBytesFromFormFileAsync(IFormFile formFile)
+    {
+        using var memoryStream = new MemoryStream();
+        await formFile.CopyToAsync(memoryStream);
+        return memoryStream.ToArray();
     }
 }

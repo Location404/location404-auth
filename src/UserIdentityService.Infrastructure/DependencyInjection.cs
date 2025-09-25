@@ -1,21 +1,21 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-
 using LiteBus.Commands.Extensions.MicrosoftDependencyInjection;
 using LiteBus.Messaging.Extensions.MicrosoftDependencyInjection;
+using LiteBus.Queries.Extensions.MicrosoftDependencyInjection;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
 using UserIdentityService.Application.Common.Interfaces;
 using UserIdentityService.Application.Features.Authentication.Commands.AuthenticateUserWithPasswordCommand;
 using UserIdentityService.Application.Features.Authentication.Interfaces;
 using UserIdentityService.Application.Features.UserManagement.Commands.CreateUserWithPasswordCommand;
+using UserIdentityService.Application.Features.UserManagement.Queries.GetCurrentUserInformation;
 using UserIdentityService.Infrastructure.Services;
 using UserIdentityService.Infrastructure.Settings;
 
@@ -56,7 +56,7 @@ public static class DependencyInjection
         {
             liteBus.AddCommandModule(module => module.RegisterFromAssembly(typeof(CreateUserWithPasswordCommandHandler).Assembly));
             liteBus.AddCommandModule(module => module.RegisterFromAssembly(typeof(AuthenticateUserWithPasswordCommandHandler).Assembly));
-            // liteBus.AddQueryModule(module => module.RegisterFromAssembly(typeof(CreateUserWithExternalProviderHandler).Assembly));
+            liteBus.AddQueryModule(module => module.RegisterFromAssembly(typeof(GetCurrentUserInformationQueryHandler).Assembly));
         });
     }
 
@@ -74,12 +74,23 @@ public static class DependencyInjection
         services.AddOptions<JwtSettings>().Bind(configuration.GetSection(nameof(JwtSettings)));
 
         JwtSettings jwtSettings = configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>()!;
-
+        JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
+                options.MapInboundClaims = false;
                 ConfigureJwtBearerOptions(options, jwtSettings, IsDevelopment);
                 ConfigureJwtBearerEvents(options, IsDevelopment);
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        context.Token = context.Request.Cookies["accessToken"];
+                        return Task.CompletedTask;
+                    }
+
+                };
             });
     }
 
@@ -114,14 +125,6 @@ public static class DependencyInjection
     {
         options.Events = new JwtBearerEvents
         {
-            OnTokenValidated = context =>
-            {
-                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger>();
-                logger.LogInformation("Token validated for user: {UserId}",
-                    context.Principal?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value);
-                return Task.CompletedTask;
-            },
-
             OnAuthenticationFailed = context =>
             {
                 if (isDevelopment)
@@ -132,13 +135,6 @@ public static class DependencyInjection
 
                 return Task.CompletedTask;
             },
-
-            OnChallenge = context =>
-            {
-                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger>();
-                logger.LogWarning("Authorization challenge for path: {Path}", context.Request.Path);
-                return Task.CompletedTask;
-            }
         };
     }
 

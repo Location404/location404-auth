@@ -4,5 +4,5 @@ public record GetCurrentUserInformationQueryResponse(
     Guid Id,
     string Username,
     string Email,
-    byte[]? ProfileImage
+    string ProfileImage
 );

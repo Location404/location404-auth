@@ -6,14 +6,10 @@ namespace UserIdentityService.Application.Features.UserManagement.Commands.Updat
 
 public class UpdateUserInformationsCommand : ICommand<Result<UpdateUserInformationsCommandResponse>>
 {
-    [Required]
     public required Guid Id { get; set; }
 
-    [EmailAddress, Required]
-    public required string Email { get; set; }
-    [MaxLength(24), MinLength(3), Required]
-    public required string Username { get; set; }
-    [MinLength(6), Required]
-    public required string Password { get; set; }
-    public byte[]? ProfileImage { get; set; }
+    [EmailAddress]
+    public string? Email { get; set; }
+    public string? Username { get; set; }
+    public string? Password { get; set; }
 }

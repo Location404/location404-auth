@@ -77,7 +77,9 @@ public class AuthenticateUserWithPasswordCommandHandler(
             UserId: user.Id,
             AccessToken: token.Value,
             RefreshToken: refreshTokenResult.Value.Token,
-            RefreshTokenExpiresAt: refreshTokenResult.Value.ExpiresAtUtc
+            Username: user.Username,
+            Email: user.Email,
+            ProfileImage: user.ProfileImage == null ? null : Convert.ToBase64String(user.ProfileImage)
         ));
     }
 }

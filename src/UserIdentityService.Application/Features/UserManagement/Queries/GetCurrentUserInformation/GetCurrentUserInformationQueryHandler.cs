@@ -26,7 +26,7 @@ public class GetCurrentUserInformationQueryHandler(
             Id: user.Id,
             Username: user.Username,
             Email: user.Email,
-            ProfileImage: user.ProfileImage
+            ProfileImage: Convert.ToBase64String(user.ProfileImage ?? [])
         ));
     }
 }

@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+
 using LiteBus.Commands.Abstractions;
 using LiteBus.Queries.Abstractions;
 
@@ -52,6 +53,7 @@ public static class UserManagementEndpoints
             .WithTags("Users")
             .Produces(StatusCodes.Status204NoContent)
             .ProducesValidationProblem(StatusCodes.Status400BadRequest)
+            .DisableAntiforgery()
             .Produces(StatusCodes.Status404NotFound)
             .RequireAuthorization();
     }
@@ -105,7 +107,7 @@ public static class UserManagementEndpoints
 
     private static async Task<IResult> HandleGetCurrentUser(
         [FromServices] IQueryMediator query,
-        [FromServices] ILogger logger,
+        [FromServices] ILogger<GetCurrentUserInformationQueryHandler> logger,
         HttpContext context)
     {
         if (!Guid.TryParse(context.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value, out var subClaim))
@@ -122,12 +124,11 @@ public static class UserManagementEndpoints
     }
 
     private static async Task<IResult> HandleUpdateUser(
-        [FromBody] UpdateUserInformationsCommand command,
+        [FromForm] UpdateUserInformationsCommand command,
         [FromServices] ICommandMediator mediator,
-        [FromServices] ILogger<UpdateUserInformationsCommand> logger)
+        [FromServices] ILogger<UpdateUserInformationsCommand> logger,
+        HttpContext context)
     {
-        logger.LogInformation("Updating user information for user: {UserId}", command.Id);
-
         var result = await mediator.SendAsync(command);
 
         return result.IsSuccess
