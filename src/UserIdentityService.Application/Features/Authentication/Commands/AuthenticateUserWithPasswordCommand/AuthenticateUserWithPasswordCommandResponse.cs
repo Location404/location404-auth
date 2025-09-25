@@ -2,10 +2,8 @@ namespace UserIdentityService.Application.Features.Authentication.Commands.Authe
 
 public record AuthenticateUserWithPasswordCommandResponse(
     Guid UserId,
+    string Username,
+    string Email,
+    string? ProfileImage,
     string AccessToken,
-    string RefreshToken,
-    DateTime RefreshTokenExpiresAt,
-    string TokenType = "Bearer")
-{
-    public int RefreshTokenExpiresInSeconds => (int)(RefreshTokenExpiresAt - DateTime.UtcNow).TotalSeconds;
-}
+    string RefreshToken);

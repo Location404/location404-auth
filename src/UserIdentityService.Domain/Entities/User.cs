@@ -60,13 +60,14 @@ public class User
         return user;
     }
 
-    public void UpdateProfile(string? username, EmailAddress? email = null, byte[]? profileImage = null)
+    public void UpdateProfile(string? username, EmailAddress? email = null, string? password = null, byte[]? profileImage = null)
     {
         if (username != null || email != null || profileImage != null)
         {
             Username = username ?? Username;
             Email = email ?? Email;
             ProfileImage = profileImage ?? ProfileImage;
+            Password =  password ?? Password;
             
             UpdatedAt = DateTime.UtcNow;
         }
