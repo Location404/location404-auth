@@ -34,7 +34,7 @@ public class UpdateUserInformationsCommandHandler(
                 ErrorType.Validation));
         }
 
-        if (user.Email != message.Email && message.Email != null)
+        if (string.IsNullOrWhiteSpace(message.Email) && message.Email != null)
         {
             var existingUserByEmail = await _unitOfWork.Users.ExistsByEmailAsync(message.Email, cancellationToken);
             if (existingUserByEmail == true)
@@ -47,7 +47,7 @@ public class UpdateUserInformationsCommandHandler(
             }
         }
 
-        if (message.Password != null && !_encryptPassword.Verify(message.Password, user.Password!))
+        if (!string.IsNullOrWhiteSpace(message.Password) && !_encryptPassword.Verify(message.Password, user.Password!))
         {
             _logger.LogDebug("The new password cannot be the same as the old one.");
             return Result<UpdateUserInformationsCommandResponse>.Failure(new Error(
@@ -56,7 +56,7 @@ public class UpdateUserInformationsCommandHandler(
                 ErrorType.Validation));
         }
 
-        if (user.Username != message.Username && message.Username != null)
+        if (string.IsNullOrWhiteSpace(message.Username) && message.Username != null)
         {
             var existingUserByUsername = await _unitOfWork.Users.ExistsByUsernameAsync(message.Username, cancellationToken);
             if (existingUserByUsername == true)
@@ -70,16 +70,18 @@ public class UpdateUserInformationsCommandHandler(
         }
 
         user.UpdateProfile(
-            message.Username ?? null,
-            message.Email != null ? EmailAddress.Create(message.Email) : null,
-            message.Password != null ? _encryptPassword.Encrypt(message.Password) : null);
+            string.IsNullOrWhiteSpace(message.Username) ? null : message.Username,
+            string.IsNullOrWhiteSpace(message.Email) ? null : EmailAddress.Create(message.Email),
+            string.IsNullOrWhiteSpace(message.Password) ? null : _encryptPassword.Encrypt(message.Password),
+            message.ProfileImage != null ? await GetBytesFromFormFileAsync(message.ProfileImage) : null);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result<UpdateUserInformationsCommandResponse>.Success(new UpdateUserInformationsCommandResponse(
             user.Id,
             user.Email,
-            user.Username));
+            user.Username,
+            user.ProfileImage));
     }
 
     public async Task<byte[]> GetBytesFromFormFileAsync(IFormFile formFile)

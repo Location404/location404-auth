@@ -3,5 +3,6 @@ namespace UserIdentityService.Application.Features.UserManagement.Commands.Updat
 public record UpdateUserInformationsCommandResponse(
     Guid Id,
     string Username,
-    string Email
+    string Email,
+    byte[]? ProfileImage
 );

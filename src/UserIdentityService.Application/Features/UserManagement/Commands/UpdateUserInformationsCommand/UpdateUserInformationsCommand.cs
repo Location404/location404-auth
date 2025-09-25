@@ -1,5 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+
 using LiteBus.Commands.Abstractions;
+
+using Microsoft.AspNetCore.Http;
+
 using UserIdentityService.Application.Common.Result;
 
 namespace UserIdentityService.Application.Features.UserManagement.Commands.UpdateUserInformationsCommand;
@@ -11,5 +16,7 @@ public class UpdateUserInformationsCommand : ICommand<Result<UpdateUserInformati
     [EmailAddress]
     public string? Email { get; set; }
     public string? Username { get; set; }
+    [AllowNull]
     public string? Password { get; set; }
+    public IFormFile? ProfileImage { get; set; }
 }
