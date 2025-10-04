@@ -52,7 +52,7 @@ public static class AuthenticationEndpoints
         var accessTokenOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = true,
+            Secure = false,
             SameSite = SameSiteMode.Lax,
             Expires = DateTimeOffset.UtcNow.AddMinutes(15)
         };
@@ -60,7 +60,7 @@ public static class AuthenticationEndpoints
         var refreshTokenOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = true,
+            Secure = false,
             SameSite = SameSiteMode.Lax,
             Expires = DateTimeOffset.UtcNow.AddDays(7),
             Path = "/api/auth/refresh"
@@ -109,7 +109,7 @@ public static class AuthenticationEndpoints
         var newAccessTokenOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = true,
+            Secure = false,
             SameSite = SameSiteMode.Lax,
             Expires = DateTimeOffset.UtcNow.AddMinutes(15)
         };
@@ -117,7 +117,7 @@ public static class AuthenticationEndpoints
         var newRefreshTokenOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = true,
+            Secure = false,
             SameSite = SameSiteMode.Lax,
             Expires = DateTimeOffset.UtcNow.AddDays(7),
             Path = "/api/auth/refresh"
