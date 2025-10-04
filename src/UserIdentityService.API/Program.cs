@@ -13,7 +13,19 @@ builder.Services.AddOpenTelemetryObservability(builder.Configuration, options =>
     options.Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
 });
 
-builder.Services.AddCors();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins(
+            "http://localhost:5173",
+            "http://location404-location404frontend-ozl1tv-88cfda-181-215-135-221.traefik.me"
+        )
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials();
+    });
+});
 
 var app = builder.Build();
 
@@ -27,9 +39,9 @@ app.MapScalarApiReference();
 app.MapGet("/", () => Results.Redirect("/scalar")).ExcludeFromDescription();
 app.UseExceptionHandler("/error");
 
+app.UseCors();
+
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.Run();
