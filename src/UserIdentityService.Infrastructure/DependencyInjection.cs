@@ -32,8 +32,25 @@ public static class DependencyInjection
         AddApplicationServices(services);
         AddJwtAuthentication(services, configuration);
         AddAuthorizationPolicies(services);
+        AddCorsConfiguration(services, configuration);
 
         return services;
+    }
+
+    private static void AddCorsConfiguration(IServiceCollection services, IConfiguration configuration)
+    {
+        var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.WithOrigins(allowedOrigins ?? [])
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
+            });
+        });
     }
 
     private static void AddDatabase(IServiceCollection services, IConfiguration configuration)
