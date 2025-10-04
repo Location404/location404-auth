@@ -39,16 +39,17 @@ public static class DependencyInjection
 
     private static void AddCorsConfiguration(IServiceCollection services, IConfiguration configuration)
     {
-        var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+        var originsString = configuration.GetValue<string>("Cors:AllowedOrigins");
+        var allowedOrigins = originsString?.Split(',', StringSplitOptions.RemoveEmptyEntries) ?? [];
 
         services.AddCors(options =>
         {
             options.AddDefaultPolicy(policy =>
             {
-                policy.WithOrigins(allowedOrigins ?? [])
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials();
+                policy.WithOrigins(allowedOrigins)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
             });
         });
     }
