@@ -79,15 +79,35 @@ public static class AuthenticationEndpoints
         ClaimsPrincipal user)
     {
         var refreshTokenFromCookie = httpContext.Request.Cookies["refreshToken"];
+        var accessTokenFromCookie = httpContext.Request.Cookies["accessToken"];
+
+        // Try to get userId from claims first (if token is still valid or within clock skew)
         var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        // If claims are not available, try to parse the expired token manually
+        if (string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(accessTokenFromCookie))
+        {
+            try
+            {
+                var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                var token = handler.ReadJwtToken(accessTokenFromCookie);
+                userId = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            }
+            catch (Exception ex)
+            {
+                logger.LogWarning("Failed to parse expired access token: {Error}", ex.Message);
+            }
+        }
 
         if (string.IsNullOrEmpty(userId) || !Guid.TryParse(userId, out var userGuid))
         {
+            logger.LogWarning("Unable to extract userId from access token");
             return Results.Unauthorized();
         }
 
         if (string.IsNullOrEmpty(refreshTokenFromCookie))
         {
+            logger.LogWarning("Refresh token cookie is missing");
             return Results.Unauthorized();
         }
 
