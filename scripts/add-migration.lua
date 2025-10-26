@@ -6,7 +6,7 @@ if not migrationName then
     os.exit(1)
 end
 
-local command = string.format("dotnet ef migrations add %s --project ../src/UserIdentityService.Infrastructure --startup-project ../src/UserIdentityService.API", migrationName)
+local command = string.format("dotnet ef migrations add %s --project ../src/Location404.Auth.Infrastructure --startup-project ../src/Location404.Auth.API", migrationName)
 print("Executando:", command)
 
 os.execute(command)

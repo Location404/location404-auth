@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // Se tiver alterado as estruturas de destino, certifique-se de atualizar o caminho do programa.
-            "program": "${workspaceFolder}/src/UserIdentityService.API/bin/Debug/net9.0/UserIdentityService.API.dll",
+            "program": "${workspaceFolder}/src/Location404.Auth.API/bin/Debug/net9.0/Location404.Auth.API.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/UserIdentityService.API",
+            "cwd": "${workspaceFolder}/src/Location404.Auth.API",
             "stopAtEntry": false,
             // Habilitar a inicialização de um navegador da web quando o ASP.NET Core for iniciado. Para obter mais informações: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {

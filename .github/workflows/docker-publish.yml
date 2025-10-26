@@ -25,7 +25,7 @@ jobs:
         run: dotnet build --no-restore --configuration Release
 
       - name: Run unit tests
-        run: dotnet test tests/UserIdentityService.Domain.UnitTests/UserIdentityService.Domain.UnitTests.csproj --no-build --configuration Release --logger "trx;LogFileName=test_results.trx"
+        run: dotnet test tests/Location404.Auth.Domain.UnitTests/Location404.Auth.Domain.UnitTests.csproj --no-build --configuration Release --logger "trx;LogFileName=test_results.trx"
 
   docker:
     runs-on: ubuntu-latest
