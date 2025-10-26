@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="LiteBus" Version="3.1.0"/>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8"/>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Location404.Auth.Domain/Location404.Auth.Domain.csproj"/>
+  </ItemGroup>
+</Project>
