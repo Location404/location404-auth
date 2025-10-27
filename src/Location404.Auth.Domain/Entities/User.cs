@@ -17,8 +17,6 @@ public class User
     public DateTime UpdatedAt { get; private set; }
     public DateTime? LastLoginAt { get; private set; }
 
-    // public Level Level { get; private set; }
-
     public string PreferredLanguage { get; private set; }
 
     public virtual ICollection<ExternalLogin> ExternalLogins { get; private set; } = [];
@@ -37,7 +35,6 @@ public class User
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
         PreferredLanguage = "pt-BR";
-        // Level = Level.Initial;
     }
 
     public static User Create(EmailAddress email, string username, string password)
@@ -96,12 +93,6 @@ public class User
         IsActive = true;
         UpdatedAt = DateTime.UtcNow;
     }
-
-    // public void AddExperience(int points)
-    // {
-    //     Level = Level.AddExperience(points);
-    //     UpdatedAt = DateTime.UtcNow;
-    // }
 
     public void ChangePreferredLanguage(string language)
     {
