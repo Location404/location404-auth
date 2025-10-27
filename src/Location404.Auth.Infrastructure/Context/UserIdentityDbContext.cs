@@ -11,12 +11,7 @@ public class UserIdentityDbContext(DbContextOptions<UserIdentityDbContext> optio
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // modelBuilder.ApplyConfiguration(new UserMapping());
-        // modelBuilder.ApplyConfiguration(new ExternalLoginMapping());
-
-        // get from assembly
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserIdentityDbContext).Assembly);
-
         base.OnModelCreating(modelBuilder);
     }
 }
