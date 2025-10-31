@@ -2,6 +2,7 @@ using Scalar.AspNetCore;
 using Shared.Observability.Core;
 
 using Location404.Auth.API.Endpoints;
+using Location404.Auth.API.Middleware;
 using Location404.Auth.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,8 @@ app.MapScalarApiReference();
 
 app.MapGet("/", () => Results.Redirect("/scalar")).ExcludeFromDescription();
 app.UseExceptionHandler("/error");
+
+app.UseMiddleware<ObservabilityMiddleware>();
 
 app.UseCors();
 
