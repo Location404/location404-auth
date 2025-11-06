@@ -6,11 +6,11 @@
     <UserSecretsId>7cd3e6fa-8a56-47cb-bd82-03c8637faacf</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4"/>
-    <PackageReference Include="Scalar.AspNetCore" Version="2.6.9"/>
-    <PackageReference Include="Location404.Shared.Observability" Version="1.0.0"/>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.6.9" />
+    <PackageReference Include="Location404.Shared.Observability" Version="1.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../Location404.Auth.Infrastructure/Location404.Auth.Infrastructure.csproj"/>
+    <ProjectReference Include="../Location404.Auth.Infrastructure/Location404.Auth.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
