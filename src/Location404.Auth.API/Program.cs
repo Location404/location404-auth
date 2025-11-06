@@ -19,6 +19,7 @@ var app = builder.Build();
 app.MapOpenApi();
 app.MapUserManagementEndpoints();
 app.MapAuthenticationEndpoints();
+app.MapObservabilityHealthChecks();
 
 app.UseHttpsRedirection();
 app.MapScalarApiReference();
