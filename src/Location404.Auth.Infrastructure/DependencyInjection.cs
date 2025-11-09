@@ -98,7 +98,6 @@ public static class DependencyInjection
             {
                 options.MapInboundClaims = false;
                 ConfigureJwtBearerOptions(options, jwtSettings, IsDevelopment);
-                ConfigureJwtBearerEvents(options, IsDevelopment);
 
                 options.Events = new JwtBearerEvents
                 {
@@ -106,8 +105,16 @@ public static class DependencyInjection
                     {
                         context.Token = context.Request.Cookies["accessToken"];
                         return Task.CompletedTask;
+                    },
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (IsDevelopment)
+                        {
+                            var keyValuePair = new KeyValuePair<string, StringValues>("Token-Error", context.Exception.Message);
+                            context.Response.Headers.Append(keyValuePair);
+                        }
+                        return Task.CompletedTask;
                     }
-
                 };
             });
     }
@@ -136,23 +143,6 @@ public static class DependencyInjection
             RequireAudience = true,
             ValidateActor = false,
             ValidateTokenReplay = false
-        };
-    }
-
-    private static void ConfigureJwtBearerEvents(JwtBearerOptions options, bool isDevelopment)
-    {
-        options.Events = new JwtBearerEvents
-        {
-            OnAuthenticationFailed = context =>
-            {
-                if (isDevelopment)
-                {
-                    var keyValuePair = new KeyValuePair<string, StringValues>("Token-Error", context.Exception.Message);
-                    context.Response.Headers.Append(keyValuePair);
-                }
-
-                return Task.CompletedTask;
-            },
         };
     }
 
