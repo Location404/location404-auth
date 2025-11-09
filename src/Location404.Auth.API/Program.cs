@@ -16,6 +16,15 @@ builder.Services.AddOpenTelemetryObservability(builder.Configuration, options =>
     options.Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
 });
 
+builder.Services.AddObservabilityHealthChecks(builder.Configuration, checks =>
+{
+    var postgresConnection = builder.Configuration.GetConnectionString("UserIdentityDatabaseProduction");
+    if (!string.IsNullOrEmpty(postgresConnection))
+    {
+        checks.AddNpgSql(postgresConnection, name: "postgres", tags: new[] { "ready", "db" });
+    }
+});
+
 var app = builder.Build();
 
 // Aplicar migrations automaticamente
