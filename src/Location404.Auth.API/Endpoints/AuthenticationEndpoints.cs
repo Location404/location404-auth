@@ -81,10 +81,8 @@ public static class AuthenticationEndpoints
         var refreshTokenFromCookie = httpContext.Request.Cookies["refreshToken"];
         var accessTokenFromCookie = httpContext.Request.Cookies["accessToken"];
 
-        // Try to get userId from claims first (if token is still valid or within clock skew)
         var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        // If claims are not available, try to parse the expired token manually
         if (string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(accessTokenFromCookie))
         {
             try
