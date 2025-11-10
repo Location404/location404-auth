@@ -8,7 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.6.9" />
-    <PackageReference Include="Location404.Shared.Observability" Version="1.2.0" />
+    <PackageReference Include="Location404.Shared.Observability" Version="1.2.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../Location404.Auth.Infrastructure/Location404.Auth.Infrastructure.csproj" />
