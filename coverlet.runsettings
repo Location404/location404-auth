@@ -5,9 +5,8 @@
       <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
           <Format>opencover,cobertura</Format>
-          <Include>[Location404.Auth.*]*</Include>
-          <Exclude>[*Tests]*,[*.Tests]*</Exclude>
-          <ExcludeByFile>**/Migrations/**/*.cs,**/Program.cs</ExcludeByFile>
+          <Exclude>[*.Tests]*,[*Tests]*</Exclude>
+          <ExcludeByFile>**/Migrations/**,**/Program.cs</ExcludeByFile>
         </Configuration>
       </DataCollector>
     </DataCollectors>
