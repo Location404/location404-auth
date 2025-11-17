@@ -65,7 +65,7 @@ jobs:
           dotnet test \
             --no-build \
             --verbosity normal \
-            --collect:"XPlat Code Coverage;Format=opencover" \
+            --collect:"XPlat Code Coverage;Format=opencover,cobertura" \
             --results-directory ./TestResults/
 
       - name: End SonarCloud analysis
@@ -78,7 +78,7 @@ jobs:
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@51cc3a756ddcd398d447c044c02cb6aa83fdae95
         with:
-          filename: '**/TestResults/**/coverage.opencover.xml'
+          filename: '**/TestResults/**/coverage.cobertura.xml'
           badge: true
           fail_below_min: false
           format: markdown
