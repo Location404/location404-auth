@@ -124,4 +124,138 @@ public class UserTests
         // Assert
         var exception = Should.Throw<InvalidOperationException>(Act);
     }
+
+    [Fact]
+    public void UpdateProfile_WithNewUsername_ShouldUpdateUsernameAndUpdatedAt()
+    {
+        var user = User.Create(_validEmail, ValidUsername, "password");
+        var originalUpdatedAt = user.UpdatedAt;
+        Thread.Sleep(10);
+
+        user.UpdateProfile("newusername");
+
+        user.Username.ShouldBe("newusername");
+        user.UpdatedAt.ShouldBeGreaterThan(originalUpdatedAt);
+    }
+
+    [Fact]
+    public void UpdateProfile_WithNewEmail_ShouldUpdateEmailAndUpdatedAt()
+    {
+        var user = User.Create(_validEmail, ValidUsername, "password");
+        var newEmail = EmailAddress.Create("newemail@example.com");
+
+        user.UpdateProfile(null, newEmail);
+
+        user.Email.ShouldBe(newEmail);
+    }
+
+    [Fact]
+    public void UpdateProfile_WithNewPassword_ShouldUpdatePasswordAndUpdatedAt()
+    {
+        var user = User.Create(_validEmail, ValidUsername, "oldpassword");
+        var newPassword = "newpassword123";
+
+        user.UpdateProfile(ValidUsername, password: newPassword);
+
+        user.Password.ShouldBe(newPassword);
+    }
+
+    [Fact]
+    public void UpdateProfile_WithNewProfileImage_ShouldUpdateImageAndUpdatedAt()
+    {
+        var user = User.Create(_validEmail, ValidUsername, "password");
+        var profileImage = new byte[] { 1, 2, 3, 4, 5 };
+
+        user.UpdateProfile(null, profileImage: profileImage);
+
+        user.ProfileImage.ShouldBe(profileImage);
+    }
+
+    [Fact]
+    public void UpdateProfile_WithAllNullValues_ShouldNotUpdateFields()
+    {
+        var user = User.Create(_validEmail, ValidUsername, "password");
+        var originalUsername = user.Username;
+        var originalEmail = user.Email;
+        var originalUpdatedAt = user.UpdatedAt;
+
+        user.UpdateProfile(null, null, null, null);
+
+        user.Username.ShouldBe(originalUsername);
+        user.Email.ShouldBe(originalEmail);
+        user.UpdatedAt.ShouldBe(originalUpdatedAt);
+    }
+
+    [Fact]
+    public void ChangePreferredLanguage_WithValidLanguage_ShouldUpdateLanguage()
+    {
+        var user = User.Create(_validEmail, ValidUsername, "password");
+
+        user.ChangePreferredLanguage("en-US");
+
+        user.PreferredLanguage.ShouldBe("en-US");
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("   ")]
+    public void ChangePreferredLanguage_WithInvalidLanguage_ShouldThrowArgumentException(string? invalidLanguage)
+    {
+        var user = User.Create(_validEmail, ValidUsername, "password");
+
+        void Act() => user.ChangePreferredLanguage(invalidLanguage!);
+
+        Should.Throw<ArgumentException>(Act);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    public void Create_WithInvalidUsername_ShouldThrowArgumentException(string invalidUsername)
+    {
+        void Act() => User.Create(_validEmail, invalidUsername, "password");
+
+        Should.Throw<ArgumentException>(Act);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    public void Create_WithInvalidPassword_ShouldThrowArgumentException(string invalidPassword)
+    {
+        void Act() => User.Create(_validEmail, ValidUsername, invalidPassword);
+
+        Should.Throw<ArgumentException>(Act);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    public void Create_WithExternalLogin_WithInvalidProvider_ShouldThrowArgumentException(string invalidProvider)
+    {
+        void Act() => User.Create(_validEmail, ValidUsername, invalidProvider, "key");
+
+        Should.Throw<ArgumentException>(Act);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    public void Create_WithExternalLogin_WithInvalidProviderKey_ShouldThrowArgumentException(string invalidKey)
+    {
+        void Act() => User.Create(_validEmail, ValidUsername, "Google", invalidKey);
+
+        Should.Throw<ArgumentException>(Act);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    public void Create_WithExternalLogin_WithInvalidUsername_ShouldThrowArgumentException(string invalidUsername)
+    {
+        void Act() => User.Create(_validEmail, invalidUsername, "Google", "key");
+
+        Should.Throw<ArgumentException>(Act);
+    }
 }
