@@ -63,7 +63,6 @@ jobs:
       - name: Run tests with coverage
         run: |
           dotnet test \
-            --no-build \
             --verbosity normal \
             --collect:"XPlat Code Coverage;Format=opencover,cobertura" \
             --results-directory ./TestResults/
