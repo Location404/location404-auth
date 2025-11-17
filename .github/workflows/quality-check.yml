@@ -64,8 +64,9 @@ jobs:
         run: |
           dotnet test \
             --verbosity normal \
-            --collect:"XPlat Code Coverage;Format=opencover,cobertura" \
-            --results-directory ./TestResults/
+            --collect:"XPlat Code Coverage" \
+            --results-directory ./TestResults/ \
+            --settings coverlet.runsettings
 
       - name: End SonarCloud analysis
         env:
