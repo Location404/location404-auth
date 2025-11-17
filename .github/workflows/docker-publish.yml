@@ -48,5 +48,5 @@ jobs:
             'http://181.215.135.221:3000/api/compose.redeploy' \
             -H 'Content-Type: application/json' \
             -H 'x-api-key: ${{ secrets.DOKPLOY_API_KEY }}' \
-            -d '{"composeId":"he-qZWX_8MJECiBy00ETU"}'
+            -d "{\"composeId\":\"he-qZWX_8MJECiBy00ETU\",\"title\":\"Deploy location404-auth\",\"description\":\"Commit: ${{ github.sha }} by ${{ github.actor }}\"}"
         continue-on-error: true
