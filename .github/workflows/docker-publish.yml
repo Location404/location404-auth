@@ -41,3 +41,12 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Trigger Dokploy deployment
+        run: |
+          curl -X POST \
+            'http://181.215.135.221:3000/api/compose.redeploy' \
+            -H 'Content-Type: application/json' \
+            -H 'x-api-key: ${{ secrets.DOKPLOY_API_KEY }}' \
+            -d '{"composeId":"he-qZWX_8MJECiBy00ETU"}'
+        continue-on-error: true
