@@ -29,12 +29,12 @@ public class UpdateUserInformationsCommandHandler(
         {
             _logger.LogWarning("User with ID {UserId} not found.", message.Id);
             return Result<UpdateUserInformationsCommandResponse>.Failure(new Error(
-                "EmailAlreadyInUse",
-                "A user with this email already exists.",
-                ErrorType.Validation));
+                "UserNotFound",
+                "User not found.",
+                ErrorType.NotFound));
         }
 
-        if (string.IsNullOrWhiteSpace(message.Email) && message.Email != null)
+        if (!string.IsNullOrWhiteSpace(message.Email))
         {
             var existingUserByEmail = await _unitOfWork.Users.ExistsByEmailAsync(message.Email, cancellationToken);
             if (existingUserByEmail == true)
@@ -47,7 +47,7 @@ public class UpdateUserInformationsCommandHandler(
             }
         }
 
-        if (!string.IsNullOrWhiteSpace(message.Password) && !_encryptPassword.Verify(message.Password, user.Password!))
+        if (!string.IsNullOrWhiteSpace(message.Password) && _encryptPassword.Verify(message.Password, user.Password!))
         {
             _logger.LogDebug("The new password cannot be the same as the old one.");
             return Result<UpdateUserInformationsCommandResponse>.Failure(new Error(
@@ -56,7 +56,7 @@ public class UpdateUserInformationsCommandHandler(
                 ErrorType.Validation));
         }
 
-        if (string.IsNullOrWhiteSpace(message.Username) && message.Username != null)
+        if (!string.IsNullOrWhiteSpace(message.Username))
         {
             var existingUserByUsername = await _unitOfWork.Users.ExistsByUsernameAsync(message.Username, cancellationToken);
             if (existingUserByUsername == true)
@@ -79,8 +79,8 @@ public class UpdateUserInformationsCommandHandler(
 
         return Result<UpdateUserInformationsCommandResponse>.Success(new UpdateUserInformationsCommandResponse(
             user.Id,
-            user.Email,
             user.Username,
+            user.Email,
             user.ProfileImage));
     }
 

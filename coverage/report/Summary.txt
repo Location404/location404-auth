@@ -1,0 +1,65 @@
+Summary
+  Generated on: 24/11/2025 - 00:52:25
+  Coverage date: 24/11/2025 - 00:15:23 - 24/11/2025 - 00:52:25
+  Parser: MultiReport (27x Cobertura)
+  Assemblies: 3
+  Classes: 39
+  Files: 37
+  Line coverage: 80.3%
+  Covered lines: 851
+  Uncovered lines: 208
+  Coverable lines: 1059
+  Total lines: 1484
+  Branch coverage: 78.3% (174 of 222)
+  Covered branches: 174
+  Total branches: 222
+  Method coverage: 85.8% (170 of 198)
+  Full method coverage: 82.3% (163 of 198)
+  Covered methods: 170
+  Fully covered methods: 163
+  Total methods: 198
+
+Location404.Auth.Application                                                                                                                          95.1%
+  Location404.Auth.Application.Common.Result.Error                                                                                                     100%
+  Location404.Auth.Application.Common.Result.Result                                                                                                    100%
+  Location404.Auth.Application.Common.Result.Result<T>                                                                                                 100%
+  Location404.Auth.Application.Features.Authentication.Commands.AuthenticateUserWithPasswordCommand.AuthenticateUserWithPasswordCommand                100%
+  Location404.Auth.Application.Features.Authentication.Commands.AuthenticateUserWithPasswordCommand.AuthenticateUserWithPasswordCommandHandler         100%
+  Location404.Auth.Application.Features.Authentication.Commands.AuthenticateUserWithPasswordCommand.AuthenticateUserWithPasswordCommandResponse       71.4%
+  Location404.Auth.Application.Features.Authentication.Commands.RefreshTokenCommand.RefreshTokenCommand                                                100%
+  Location404.Auth.Application.Features.Authentication.Commands.RefreshTokenCommand.RefreshTokenCommandHandler                                         100%
+  Location404.Auth.Application.Features.Authentication.Commands.RefreshTokenCommand.RefreshTokenCommandResponse                                       83.3%
+  Location404.Auth.Application.Features.UserManagement.Commands.CreateUserWithExternalProviderCommand.CreateUserWithExternalProviderCommand              0%
+  Location404.Auth.Application.Features.UserManagement.Commands.CreateUserWithExternalProviderCommand.CreateUserWithExternalProviderCommandHandler       0%
+  Location404.Auth.Application.Features.UserManagement.Commands.CreateUserWithExternalProviderCommand.CreateUserWithExternalProviderCommandResponse      0%
+  Location404.Auth.Application.Features.UserManagement.Commands.CreateUserWithPasswordCommand.CreateUserWithPasswordCommand                            100%
+  Location404.Auth.Application.Features.UserManagement.Commands.CreateUserWithPasswordCommand.CreateUserWithPasswordCommandHandler                     100%
+  Location404.Auth.Application.Features.UserManagement.Commands.CreateUserWithPasswordCommand.CreateUserWithPasswordCommandResponse                     80%
+  Location404.Auth.Application.Features.UserManagement.Commands.UpdateUserInformationsCommand.UpdateUserInformationsCommand                            100%
+  Location404.Auth.Application.Features.UserManagement.Commands.UpdateUserInformationsCommand.UpdateUserInformationsCommandHandler                     100%
+  Location404.Auth.Application.Features.UserManagement.Commands.UpdateUserInformationsCommand.UpdateUserInformationsCommandResponse                    100%
+  Location404.Auth.Application.Features.UserManagement.Queries.GetCurrentUserInformation.GetCurrentUserInformationQuery                                100%
+  Location404.Auth.Application.Features.UserManagement.Queries.GetCurrentUserInformation.GetCurrentUserInformationQueryHandler                         100%
+  Location404.Auth.Application.Features.UserManagement.Queries.GetCurrentUserInformation.GetCurrentUserInformationQueryResponse                        100%
+
+Location404.Auth.Domain                                                                                                                               92.1%
+  Location404.Auth.Domain.Entities.ExternalLogin                                                                                                       100%
+  Location404.Auth.Domain.Entities.RefreshToken                                                                                                       95.2%
+  Location404.Auth.Domain.Entities.User                                                                                                                100%
+  Location404.Auth.Domain.ValueObjects.EmailAddress                                                                                                    100%
+  Location404.Auth.Domain.ValueObjects.Level                                                                                                           100%
+  System.Text.RegularExpressions.Generated                                                                                                            86.7%
+  System.Text.RegularExpressions.Generated.<RegexGenerator_g>F757348AB8884D0462CD337812DC05D2ED169777ECA720542D9A94E5950F6BD92__Regex_0               86.5%
+
+Location404.Auth.Infrastructure                                                                                                                       56.7%
+  Location404.Auth.Infrastructure.Context.EntitiesMapping.ExternalLoginMapping                                                                         100%
+  Location404.Auth.Infrastructure.Context.EntitiesMapping.RefreshTokenMapping                                                                          100%
+  Location404.Auth.Infrastructure.Context.EntitiesMapping.UserMapping                                                                                  100%
+  Location404.Auth.Infrastructure.Context.UserIdentityDbContext                                                                                        100%
+  Location404.Auth.Infrastructure.DependencyInjection                                                                                                    0%
+  Location404.Auth.Infrastructure.Services.BcryptEncryptPasswordService                                                                               86.3%
+  Location404.Auth.Infrastructure.Services.CustomExceptionHandler                                                                                        0%
+  Location404.Auth.Infrastructure.Services.TokenService                                                                                               56.5%
+  Location404.Auth.Infrastructure.Services.UnitOfWork                                                                                                 66.6%
+  Location404.Auth.Infrastructure.Services.UserRepository                                                                                              100%
+  Location404.Auth.Infrastructure.Settings.JwtSettings                                                                                                 100%
