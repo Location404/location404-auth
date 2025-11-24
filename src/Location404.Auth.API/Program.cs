@@ -27,7 +27,6 @@ builder.Services.AddObservabilityHealthChecks(builder.Configuration, checks =>
 
 var app = builder.Build();
 
-// Aplicar migrations automaticamente
 using (var scope = app.Services.CreateScope())
 {
     try
@@ -60,5 +59,6 @@ app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.Run();
