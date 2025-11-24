@@ -73,24 +73,6 @@ public class UserRepositoryIntegrationTests : IDisposable
         result.Should().BeNull();
     }
 
-    // [Fact]
-    // public async Task GetUserByEmailAsync_WithExistingUser_ShouldReturnUser()
-    // {
-    //     var email = "test@example.com";
-    //     var user = User.Create(
-    //         EmailAddress.Create(email),
-    //         "testuser",
-    //         "hashedPassword");
-
-    //     await _context.Users.AddAsync(user);
-    //     await _context.SaveChangesAsync();
-
-    //     var result = await _repository.GetUserByEmailAsync(email);
-
-    //     result.Should().NotBeNull();
-    //     ((string)result!.Email).Should().Be(email);
-    // }
-
     [Fact]
     public async Task GetUserByEmailAsync_WithNonExistentEmail_ShouldReturnNull()
     {
@@ -98,23 +80,6 @@ public class UserRepositoryIntegrationTests : IDisposable
 
         result.Should().BeNull();
     }
-
-    // [Fact]
-    // public async Task ExistsByEmailAsync_WithExistingEmail_ShouldReturnTrue()
-    // {
-    //     var email = "test@example.com";
-    //     var user = User.Create(
-    //         EmailAddress.Create(email),
-    //         "testuser",
-    //         "hashedPassword");
-
-    //     await _context.Users.AddAsync(user);
-    //     await _context.SaveChangesAsync();
-
-    //     var result = await _repository.ExistsByEmailAsync(email);
-
-    //     result.Should().BeTrue();
-    // }
 
     [Fact]
     public async Task ExistsByEmailAsync_WithNonExistentEmail_ShouldReturnFalse()
