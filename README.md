@@ -78,38 +78,38 @@ O projeto segue **Clean Architecture** com separação clara de responsabilidade
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                  API Layer (Minimal APIs)                    │
-│  ┌─────────────┐  ┌──────────────┐  ┌──────────────────┐   │
-│  │    Auth     │  │    User      │  │  Filters &       │   │
-│  │  Endpoints  │  │  Endpoints   │  │  Middlewares     │   │
-│  └─────────────┘  └──────────────┘  └──────────────────┘   │
+│                  API Layer (Minimal APIs)                   │
+│  ┌─────────────┐  ┌──────────────┐  ┌──────────────────┐    │
+│  │    Auth     │  │    User      │  │  Filters &       │    │
+│  │  Endpoints  │  │  Endpoints   │  │  Middlewares     │    │
+│  └─────────────┘  └──────────────┘  └──────────────────┘    │
 └─────────────────────────────────────────────────────────────┘
                             │
 ┌─────────────────────────────────────────────────────────────┐
-│                    Application Layer                         │
-│  ┌──────────────────┐  ┌──────────────────────────────┐    │
-│  │ Commands/Queries │  │  Interfaces & Validators     │    │
-│  │ - CreateUser     │  │  - IUserRepository           │    │
-│  │ - Authenticate   │  │  - IPasswordHasher           │    │
-│  │ - RefreshToken   │  │  - ITokenGenerator           │    │
-│  └──────────────────┘  └──────────────────────────────┘    │
+│                    Application Layer                        │
+│  ┌──────────────────┐  ┌──────────────────────────────┐     │
+│  │ Commands/Queries │  │  Interfaces & Validators     │     │ 
+│  │ - CreateUser     │  │  - IUserRepository           │     │
+│  │ - Authenticate   │  │  - IPasswordHasher           │     │
+│  │ - RefreshToken   │  │  - ITokenGenerator           │     │
+│  └──────────────────┘  └──────────────────────────────┘     │
 └─────────────────────────────────────────────────────────────┘
                             │
 ┌─────────────────────────────────────────────────────────────┐
-│                      Domain Layer                            │
-│  ┌──────────────┐  ┌──────────────┐  ┌─────────────────┐   │
-│  │  Entities    │  │ Value Objects│  │  Domain Events  │   │
-│  │  - User      │  │  - Email     │  │  - UserCreated  │   │
-│  │  - RefreshTkn│  │  - Password  │  │  - UserAuth'd   │   │
-│  └──────────────┘  └──────────────┘  └─────────────────┘   │
+│                      Domain Layer                           │
+│  ┌──────────────┐  ┌──────────────┐  ┌─────────────────┐    │
+│  │  Entities    │  │ Value Objects│  │  Domain Events  │    │
+│  │  - User      │  │  - Email     │  │  - UserCreated  │    │
+│  │  - RefreshTkn│  │  - Password  │  │  - UserAuth'd   │    │
+│  └──────────────┘  └──────────────┘  └─────────────────┘    │
 └─────────────────────────────────────────────────────────────┘
                             │
 ┌─────────────────────────────────────────────────────────────┐
-│                  Infrastructure Layer                        │
-│  ┌──────────┐  ┌─────────┐  ┌──────────┐  ┌─────────────┐ │
-│  │PostgreSQL│  │ BCrypt  │  │   JWT    │  │File Storage │ │
-│  │ (EF Core)│  │(Hashing)│  │ (Tokens) │  │ (Images)    │ │
-│  └──────────┘  └─────────┘  └──────────┘  └─────────────┘ │
+│                  Infrastructure Layer                       │
+│  ┌──────────┐  ┌─────────┐  ┌──────────┐  ┌─────────────┐   │
+│  │PostgreSQL│  │ BCrypt  │  │   JWT    │  │File Storage │   │
+│  │ (EF Core)│  │(Hashing)│  │ (Tokens) │  │ (Images)    │   │
+│  └──────────┘  └─────────┘  └──────────┘  └─────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -738,3 +738,4 @@ Este projeto está sob a licença **MIT**. Veja o arquivo [LICENSE](LICENSE) par
 <p align="center">
   Desenvolvido por <a href="https://github.com/ryanbromati">ryanbromati</a>
 </p>
+
