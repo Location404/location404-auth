@@ -76,9 +76,42 @@ O **Location404 Auth Service** é o serviço de autenticação centralizado do L
 
 O projeto segue **Clean Architecture** com separação clara de responsabilidades:
 
-<p align="center">
-  <img src="docs/diagrams/clean-architecture.svg" alt="Arquitetura Clean Architecture" width="800"/>
-</p>
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  API Layer (Minimal APIs)                    │
+│  ┌─────────────┐  ┌──────────────┐  ┌──────────────────┐   │
+│  │    Auth     │  │    User      │  │  Filters &       │   │
+│  │  Endpoints  │  │  Endpoints   │  │  Middlewares     │   │
+│  └─────────────┘  └──────────────┘  └──────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+                            │
+┌─────────────────────────────────────────────────────────────┐
+│                    Application Layer                         │
+│  ┌──────────────────┐  ┌──────────────────────────────┐    │
+│  │ Commands/Queries │  │  Interfaces & Validators     │    │
+│  │ - CreateUser     │  │  - IUserRepository           │    │
+│  │ - Authenticate   │  │  - IPasswordHasher           │    │
+│  │ - RefreshToken   │  │  - ITokenGenerator           │    │
+│  └──────────────────┘  └──────────────────────────────┘    │
+└─────────────────────────────────────────────────────────────┘
+                            │
+┌─────────────────────────────────────────────────────────────┐
+│                      Domain Layer                            │
+│  ┌──────────────┐  ┌──────────────┐  ┌─────────────────┐   │
+│  │  Entities    │  │ Value Objects│  │  Domain Events  │   │
+│  │  - User      │  │  - Email     │  │  - UserCreated  │   │
+│  │  - RefreshTkn│  │  - Password  │  │  - UserAuth'd   │   │
+│  └──────────────┘  └──────────────┘  └─────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+                            │
+┌─────────────────────────────────────────────────────────────┐
+│                  Infrastructure Layer                        │
+│  ┌──────────┐  ┌─────────┐  ┌──────────┐  ┌─────────────┐ │
+│  │PostgreSQL│  │ BCrypt  │  │   JWT    │  │File Storage │ │
+│  │ (EF Core)│  │(Hashing)│  │ (Tokens) │  │ (Images)    │ │
+│  └──────────┘  └─────────┘  └──────────┘  └─────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ### Camadas
 
