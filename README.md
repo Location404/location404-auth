@@ -76,7 +76,9 @@ O **Location404 Auth Service** é o serviço de autenticação centralizado do L
 
 O projeto segue **Clean Architecture** com separação clara de responsabilidades:
 
-![Arquitetura Clean Architecture](docs/diagrams/clean-architecture.svg)
+<p align="center">
+  <img src="docs/diagrams/clean-architecture.svg" alt="Arquitetura Clean Architecture" width="800"/>
+</p>
 
 ### Camadas
 
