@@ -34,7 +34,7 @@ public class UpdateUserInformationsCommandHandler(
                 ErrorType.NotFound));
         }
 
-        if (!string.IsNullOrWhiteSpace(message.Email))
+        if (!string.IsNullOrWhiteSpace(message.Email) && message.Email != user.Email.ToString())
         {
             var existingUserByEmail = await _unitOfWork.Users.ExistsByEmailAsync(message.Email, cancellationToken);
             if (existingUserByEmail == true)
@@ -56,7 +56,7 @@ public class UpdateUserInformationsCommandHandler(
                 ErrorType.Validation));
         }
 
-        if (!string.IsNullOrWhiteSpace(message.Username))
+        if (!string.IsNullOrWhiteSpace(message.Username) && message.Username != user.Username)
         {
             var existingUserByUsername = await _unitOfWork.Users.ExistsByUsernameAsync(message.Username, cancellationToken);
             if (existingUserByUsername == true)
