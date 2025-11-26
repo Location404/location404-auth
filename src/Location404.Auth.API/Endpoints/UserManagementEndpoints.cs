@@ -10,6 +10,7 @@ using Location404.Auth.Application.Features.UserManagement.Commands.CreateUserWi
 using Location404.Auth.Application.Features.UserManagement.Commands.CreateUserWithPasswordCommand;
 using Location404.Auth.Application.Features.UserManagement.Commands.UpdateUserInformationsCommand;
 using Location404.Auth.Application.Features.UserManagement.Queries.GetCurrentUserInformation;
+using Location404.Auth.Application.Features.UserManagement.Queries.GetUsersProfiles;
 
 namespace Location404.Auth.API.Endpoints;
 
@@ -44,6 +45,14 @@ public static class UserManagementEndpoints
             .WithTags("Users")
             .Produces<GetCurrentUserInformationQueryResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
+            .RequireAuthorization();
+
+        // POST /api/users/profiles - Get multiple user profiles
+        group.MapPost("/profiles", HandleGetUsersProfiles)
+            .WithName("GetUsersProfiles")
+            .WithDescription("Get username and profile image for multiple users")
+            .WithTags("Users")
+            .Produces<List<UserProfileResponse>>(StatusCodes.Status200OK)
             .RequireAuthorization();
 
         // PATCH /api/users/{id} - Update user
@@ -121,6 +130,18 @@ public static class UserManagementEndpoints
         return result.IsSuccess
             ? Results.Ok(result.Value)
             : Results.NotFound(result.Error);
+    }
+
+    private static async Task<IResult> HandleGetUsersProfiles(
+        [FromBody] GetUsersProfilesQuery query,
+        [FromServices] IQueryMediator queryMediator,
+        [FromServices] ILogger<GetUsersProfilesQueryHandler> logger)
+    {
+        var result = await queryMediator.QueryAsync(query);
+
+        return result.IsSuccess
+            ? Results.Ok(result.Value)
+            : Results.BadRequest(result.Error);
     }
 
     private static async Task<IResult> HandleUpdateUser(

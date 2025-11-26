@@ -6,6 +6,7 @@ public interface IUserRepository : IDisposable
 {
     Task<User?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken = default);
     Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default);
+    Task<List<User>> GetUsersByIdsAsync(List<Guid> userIds, CancellationToken cancellationToken = default);
     Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default);
     Task<bool> ExistsByUsernameAsync(string username, CancellationToken cancellationToken = default);
     Task AddUserAsync(User user, CancellationToken cancellationToken = default);

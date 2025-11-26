@@ -32,6 +32,13 @@ public class UserRepository(UserIdentityDbContext context) : IUserRepository
         return await _context.Users.SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
     }
 
+    public async Task<List<User>> GetUsersByIdsAsync(List<Guid> userIds, CancellationToken cancellationToken = default)
+    {
+        return await _context.Users
+            .Where(u => userIds.Contains(u.Id))
+            .ToListAsync(cancellationToken);
+    }
+
     public bool UpdateUserAsync(User user, CancellationToken cancellationToken = default)
     {
         var entry = _context.Users.Update(user);
