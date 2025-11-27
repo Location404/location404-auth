@@ -43,8 +43,10 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Trigger Dokploy deployment
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
-          COMMIT_MSG=$(echo '${{ github.event.head_commit.message }}' | jq -Rs .)
+          COMMIT_MSG=$(echo "$COMMIT_MESSAGE" | jq -Rs .)
           curl -X POST \
             'http://181.215.135.221:3000/api/compose.redeploy' \
             -H 'Content-Type: application/json' \
