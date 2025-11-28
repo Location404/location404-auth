@@ -12,9 +12,12 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         _logger.LogError(exception, "Ocorreu um erro não tratado: {ErrorMessage}", exception.Message);
+
+        var statusCode = httpContext.Response.StatusCode == 200 ? StatusCodes.Status500InternalServerError : httpContext.Response.StatusCode;
+
         ProblemDetails problemDetails = new()
         {
-            Status = httpContext.Response.StatusCode,
+            Status = statusCode,
             Detail = exception.Message,
             Instance = httpContext.Response.Headers.Referer,
         };
@@ -22,7 +25,7 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
         problemDetails.Extensions["exceptionType"] = exception.GetType().Name;
         problemDetails.Extensions["traceId"] = httpContext.TraceIdentifier;
 
-        httpContext.Response.StatusCode = httpContext.Response.StatusCode;
+        httpContext.Response.StatusCode = statusCode;
         httpContext.Response.ContentType = "application/problem+json";
 
         await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);

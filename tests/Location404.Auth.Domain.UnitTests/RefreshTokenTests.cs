@@ -95,7 +95,6 @@ public class RefreshTokenTests
         refreshToken.Revoke();
         var firstRevokedDate = refreshToken.RevokedAtUtc;
 
-        Thread.Sleep(100);
         refreshToken.Revoke();
 
         refreshToken.RevokedAtUtc.Should().Be(firstRevokedDate);

@@ -110,8 +110,7 @@ public static class DependencyInjection
                     {
                         if (IsDevelopment)
                         {
-                            var keyValuePair = new KeyValuePair<string, StringValues>("Token-Error", context.Exception.Message);
-                            context.Response.Headers.Append(keyValuePair);
+                            context.Response.Headers.Append("Token-Error", context.Exception.Message);
                         }
                         return Task.CompletedTask;
                     }

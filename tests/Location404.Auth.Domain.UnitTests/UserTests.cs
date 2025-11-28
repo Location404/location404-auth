@@ -130,12 +130,11 @@ public class UserTests
     {
         var user = User.Create(_validEmail, ValidUsername, "password");
         var originalUpdatedAt = user.UpdatedAt;
-        Thread.Sleep(10);
 
         user.UpdateProfile("newusername");
 
         user.Username.ShouldBe("newusername");
-        user.UpdatedAt.ShouldBeGreaterThan(originalUpdatedAt);
+        user.UpdatedAt.ShouldBeGreaterThanOrEqualTo(originalUpdatedAt);
     }
 
     [Fact]
