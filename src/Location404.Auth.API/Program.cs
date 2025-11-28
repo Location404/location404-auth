@@ -21,7 +21,7 @@ builder.Services.AddObservabilityHealthChecks(builder.Configuration, checks =>
     var postgresConnection = builder.Configuration.GetConnectionString("UserIdentityDatabaseProduction");
     if (!string.IsNullOrEmpty(postgresConnection))
     {
-        checks.AddNpgSql(postgresConnection, name: "postgres", tags: new[] { "ready", "db" }, timeout: TimeSpan.FromSeconds(3));
+        checks.AddNpgSql(postgresConnection, name: "postgres", tags: ["ready", "db"], timeout: TimeSpan.FromSeconds(3));
     }
 });
 
@@ -32,13 +32,13 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = scope.ServiceProvider.GetRequiredService<UserIdentityDbContext>();
-        Console.WriteLine("🔄 Applying database migrations...");
+        Console.WriteLine("Applying database migrations...");
         await context.Database.MigrateAsync();
-        Console.WriteLine("✅ Database migrations applied successfully");
+        Console.WriteLine("Database migrations applied successfully");
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"⚠️  Database migration failed (service will still start): {ex.Message}");
+        Console.WriteLine($"Database migration failed (service will still start): {ex.Message}");
     }
 }
 
