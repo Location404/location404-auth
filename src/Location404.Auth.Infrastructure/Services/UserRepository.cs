@@ -67,19 +67,19 @@ public class UserRepository(UserIdentityDbContext context) : IUserRepository
 
     # region [RefreshTokens]
 
-    public void AddRefreshToken(RefreshToken token, CancellationToken cancellationToken)
+    public void AddRefreshToken(RefreshToken token, CancellationToken cancellationToken = default)
     {
         _context.RefreshTokens.Add(token);
     }
 
-    public async Task<RefreshToken?> GetByTokenAsync(Guid userId, string token, CancellationToken cancellationToken)
+    public async Task<RefreshToken?> GetByTokenAsync(Guid userId, string token, CancellationToken cancellationToken = default)
     {
         return await _context.RefreshTokens
             .Where(rt => rt.UserId == userId && rt.Token == token)
             .SingleOrDefaultAsync(cancellationToken);
     }
 
-    public async Task RevokeAllByUserAsync(Guid userId, CancellationToken cancellationToken)
+    public async Task RevokeAllByUserAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         var refreshTokens = await _context.RefreshTokens
             .Where(rt => rt.UserId == userId)
